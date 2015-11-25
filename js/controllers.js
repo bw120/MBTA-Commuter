@@ -1,3 +1,9 @@
+function MenuCtrl ($scope) {
+	$scope.menuOpen = false;
+
+}
+
+
 function BuilderCtrl ($scope, myData, myCommutes, Mbta) {
 	var self = this;
 	$scope.Data = myData;

@@ -1,6 +1,7 @@
 angular
 	.module('app', ['ngRoute'])
-	.controller('BuilderCtrl', BuilderCtrl )
+	.controller('MenuCtrl', MenuCtrl)
+	.controller('BuilderCtrl', BuilderCtrl)
 	.controller('DashboardCtrl', DashboardCtrl)
 	.controller('ViewerCtrl', ViewerCtrl)
 	.controller('ExplorerCtrl', ExplorerCtrl)

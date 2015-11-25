@@ -2,23 +2,55 @@
 <html ng-app="app">
 	<head >
 		<meta charset="utf-8">
-		<title>PHP ajax test</title>
+		<title>My T Commute</title>
 		<script src="js/libs/jquery-2.1.4.min.js"></script>
 		<script src="js/libs/angular.min.js"></script>
 		<script src="js/libs/angular-route.min.js"></script>
 		<script src="js/libs/angular-resource.min.js"></script>
 		<script src="js/controllers.js"></script>
 		<script src="js/services.js"></script>
-
-
-
 		<script src="js/app.js"></script>
+		<link href='https://fonts.googleapis.com/css?family=Nunito:400,700,300' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="css/style.css">
 
 	</head>
 	<body>
-		<div>main template</div>
-		<div ng-view ></div>
+		<div class="container">
+			<div ng-controller="MenuCtrl" class="topBar">
+				<div class="topBarLeft">
+					<div ng-show="menuOpen" class="menu">
+						<div class="menuItem"><a href="#/dashboard" ng-click="menuOpen = !menuOpen">Dashboard</a></div>
+						<div class="menuItem"><a href="#/builder" ng-click="menuOpen = !menuOpen">Build Commute</a></div>
+						<div class="menuItem"><a href="#/explorer" ng-click="menuOpen = !menuOpen">Explorer</a></div>
+					</div>
+					<div ng-click="menuOpen = !menuOpen" class="menuContainer">
+						<div class="menuIcon">
+							<?xml version="1.0" encoding="utf-8"?>
+							<!-- Generator: Adobe Illustrator 19.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+							<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+								 viewBox="-133 135 32 32" style="enable-background:new -133 135 32 32;" xml:space="preserve">
+							<style type="text/css">
+								.st0{fill:#FFFFFF;}
+							</style>
+							<path class="st0" d="M-129,145h24c1.1,0,2-0.9,2-2s-0.9-2-2-2h-24c-1.1,0-2,0.9-2,2S-130.1,145-129,145z M-105,149h-24
+								c-1.1,0-2,0.9-2,2s0.9,2,2,2h24c1.1,0,2-0.9,2-2S-103.9,149-105,149z M-105,157h-24c-1.1,0-2,0.9-2,2s0.9,2,2,2h24c1.1,0,2-0.9,2-2
+								S-103.9,157-105,157z"/>
+							</svg>
+						</div>
+						<div class="menuText">
+							Menu
+						</div>
+					</div>
 
+
+				</div>
+				<div class="topBarRight"></div>
+
+			</div>
+
+
+			<div ng-view ></div>
+		</div>
 
 	</body>
 </html>
