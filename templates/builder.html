@@ -1,0 +1,25 @@
+		<p>builder template</p>
+		<div ng-controller="BuilderCtrl">
+
+
+	      <select ng-model="line">
+	        <option value="1">Subway</option>
+	        <option value="2">Bus</option>
+	        <option value="3">Commuter Rail</option>
+	        <option value="4">Boat</option>
+	      </select>
+
+
+	      <div ng-switch on="line">
+
+	      		<div ng-switch-when="1"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.subway"></select></div>
+	      		<div ng-switch-when="2"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.bus"></select></div>
+	      		<div ng-switch-when="3"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.cRail"></select></div>
+	      		<div ng-switch-when="4"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.boat"></select></div>
+
+	      </div>
+	      <p>{{ AllRoutes.subway }}</p>
+	      <p>{{ AllRoutes.boat }}</p>
+
+			
+		</div>
