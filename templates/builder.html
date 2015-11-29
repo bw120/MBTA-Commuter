@@ -1,25 +1,56 @@
-		<p>builder template</p>
-		<div ng-controller="BuilderCtrl">
+
+<div ng-controller="BuilderCtrl">
+	<h1>Commute Builder</h1>
+
+	<div>
+		Please select a transit mode
+		<select ng-model="line">
+			<option value="1">Subway</option>
+			<option value="2">Bus</option>
+			<option value="3">Commuter Rail</option>
+			<option value="4">Boat</option>
+		</select>
+	</div>
 
 
-	      <select ng-model="line">
-	        <option value="1">Subway</option>
-	        <option value="2">Bus</option>
-	        <option value="3">Commuter Rail</option>
-	        <option value="4">Boat</option>
-	      </select>
+	<div ng-switch on="line">
 
-
-	      <div ng-switch on="line">
-
-	      		<div ng-switch-when="1"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.subway"></select></div>
-	      		<div ng-switch-when="2"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.bus"></select></div>
-	      		<div ng-switch-when="3"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.cRail"></select></div>
-	      		<div ng-switch-when="4"><select ng-model="selectedLine" ng-options="item.route_id as item.route_name for item in AllRoutes.boat"></select></div>
-
-	      </div>
-	      <p>{{ AllRoutes.subway }}</p>
-	      <p>{{ AllRoutes.boat }}</p>
-
-			
+		<div ng-switch-when="1">
+			Please select a line:
+			<select ng-model="selectedLine" ng-change="getStops(selectedLine)" ng-options="item.route_id as item.route_name for item in AllRoutes.subway"></select>
 		</div>
+		<div ng-switch-when="2">
+			Please select a line:
+			<select ng-model="selectedLine" ng-change="getStops(selectedLine)" ng-options="item.route_id as item.route_name for item in AllRoutes.bus"></select>
+		</div>
+		<div ng-switch-when="3">
+			Please select a line:
+			<select ng-model="selectedLine" ng-change="getStops(selectedLine)" ng-options="item.route_id as item.route_name for item in AllRoutes.cRail"></select>
+		</div>
+		<div ng-switch-when="4">
+			Please select a line:
+			<select ng-model="selectedLine" ng-change="getStops(selectedLine)" ng-options="item.route_id as item.route_name for item in AllRoutes.boat"></select>
+		</div>
+
+	</div>
+	<div ng-show="selectedLine">
+		<div class="trip">
+			Trip direction
+			<select ng-model="direction" ng-options="item.direction_id as item.direction_name for item in Stops"></select>
+		</div>
+		<div>
+			Select boarding stop
+			<select ng-model="trip1" ng-options="item.stop_id as item.stop_name for item in Stops[direction].stop"></select>
+		</div>
+		<div>
+			<button ng-click="addLeg()">Add Leg</button>
+			<button ng-click="done()">Done</button>
+
+
+
+	</div>
+		<div>
+
+		</div>
+
+</div>

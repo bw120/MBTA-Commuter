@@ -35,6 +35,6 @@ function router ($routeProvider) {
 		controller: 'ExplorerCtrl'
 	})
 	.otherwise({
-        redirectTo: '/builder'
+        redirectTo: '/dashboard'
 	});
 }

@@ -33,11 +33,12 @@ function myCommutes () {
 //loads various info from MBTA API
 function Mbta ($http, $q) {
 	var apiURL = function(query) {
-		return "http://realtime.mbta.com/developer/api/v2/" + query + "?api_key=ed9Jx40ToEWg1VNZqWyYaw&format=json";
+		return "http://realtime.mbta.com/developer/api/v2/" + query + "api_key=ed9Jx40ToEWg1VNZqWyYaw&format=json";
 	}
 
 	this.getRoutes = function() {
-		return $http.get(apiURL("routes"))
+		var query = "routes?"
+		return $http.get(apiURL(query))
 			.then(
 				function(res) {
 					//organize list
@@ -56,5 +57,21 @@ function Mbta ($http, $q) {
 			});
 
 	}
+	this.getStops = function(route) {
+		var query = "stopsbyroute?route=" + route + "&";
+		return $http.get(apiURL(query))
+			.then(
+				function(res) {
+
+					console.log(res.data.direction);
+					return res.data.direction;
+			},
+			function(res) {
+				console.log("error!");
+				return res;
+			});
+
+	}
+
 
 }

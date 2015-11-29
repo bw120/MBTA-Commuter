@@ -1,9 +1,13 @@
 /** {border: 1px solid red;}*/
+html, 
 body {
 	font-family: 'Nunito', sans-serif;
 	background-color: #313969;
 	border: 0;
 	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
 }
 a {
     text-decoration: none;
@@ -12,7 +16,12 @@ a {
     color: #DF3A01;
 }
 .container {
+	position: inline;
+	background-color: white;
+	height: 100%;
+	width: 100%;
 	max-width: 700px;
+
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 0;
@@ -37,6 +46,7 @@ a {
 	height: 100%;
 	color: white;
 	position: relative;
+
 
 	
 	
@@ -65,7 +75,7 @@ a {
 
 }
 .menuContainer {
-	padding: 2%;
+	padding: 6% 4% 4% 6%;
 	display: flex;
 	flex-direction: row;
 }
@@ -74,5 +84,8 @@ a {
 	text-align: text-center;
 	margin-top: auto;
 	margin-bottom: auto;
-	padding-left: 2%;
+	padding: 0 2% 2% 2%;
+}
+.content {
+	padding: 5%;
 }
