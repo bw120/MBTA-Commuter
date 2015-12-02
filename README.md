@@ -10,6 +10,8 @@ view of your commute instad of just one line at a time. This is an advantage for
 - jQuery
 - AngularJS
 
+##APIs used
+ - MBTA API
 
 ##Features
 This project is still in the works. Not many features function yet. Here is a list of features to come
