@@ -1,11 +1,12 @@
 angular
-	.module('app', ['ngRoute'])
+	.module('app', ['ngRoute','firebase'])
 	.controller('MenuCtrl', MenuCtrl)
 	.controller('BuilderCtrl', BuilderCtrl)
 	.controller('DashboardCtrl', DashboardCtrl)
 	.controller('ViewerCtrl', ViewerCtrl)
 	.controller('ExplorerCtrl', ExplorerCtrl)
 	.controller('LoginCtrl', LoginCtrl)
+	.controller('firebaseCtrl', firebaseCtrl)
 	.factory('myData', myData)
 	.factory('myCommutes', myCommutes)
 	.service('Mbta', Mbta)

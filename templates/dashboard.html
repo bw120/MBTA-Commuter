@@ -1,5 +1,22 @@
 		<div ng-controller="DashboardCtrl">
-			<h1>Dashboard template</h2>
+			<h1>Dashboard</h2>
+				<div ng-if="myCommutes.length <= 0">
+					<div class="commute">You have not setup any commutes</div>
+				</div>
+				<div ng-if="myCommutes.length > 0">
+					<div ng-repeat="commute in myCommutes">
+						<div class="commute">
+							<div class="commuteHeader">{{ commute.name }}</div>
+							<div class="commuteLegs" ng-repeat="leg in commute.routeLegs">
+								<span> {{leg.line}} - {{leg.direction}}</span> <span> Next predicted arrival </span> <span> alert status</span>
+
+
+							</div>
+						</div>
+
+
+					</div>
+				</div>
 
 
 		</div>

@@ -1,31 +1,53 @@
 function myData () {
-	//this factory could possibly used to store user info and to sync with localstorage or Firebase.
-	//check firebase website. They have a way of doing 3-way bindings
+
 
 	return {message: "this is my message"};
 
 };
 
 
-//holds user data about defined commutes
-function myCommutes () {
-	var commutes = [{
-		name: "sample commute",
-		routeLeg: [{
-			line: "101",
-			direction: "inbound",
-			boardingStop: "Marion",
-			disboardStop: "Sulivan Sqr"
-		},{
-			line: "orange",
-			direction: "inbound",
-			boardingStop: "Sullivan Sqr",
-			disboardStop: "Back Bay"
-		}],
+//syncs user data with Firebase
+function myCommutes ($firebaseArray) {
 
-	}];
 
-	return commutes;
+		var ref = new Firebase("https://tcommutes.firebaseio.com/commutes");
+
+		//var commutes = ref.child(username);
+
+		return $firebaseArray(ref);
+
+
+	
+
+	// var commutes = $firebaseObject(ref);
+	// [
+	// 	{
+	// 	name: "sample commute",
+	// 		routeLegs: [{
+	// 			modeID: "0",
+	// 			mode: "Subway",
+	// 			lineID: "Red",
+	// 			line: "Red Line",
+	// 			direction: "Southbound",
+	// 			boardingStopID: "70063",
+	// 			disboardStopID: "70073",
+	// 			boardingStop: "Davis - Inbound",
+	// 			disboardStop: "Charles/MGH - Inbound"
+	// 		},{
+	// 			modeID: "0",
+	// 			mode: "Subway",
+	// 			lineID: "Green-B",
+	// 			line: "Green Line B",
+	// 			direction: "Westbound",
+	// 			boardingStopID: "70196",
+	// 			disboardStopID: "70155",
+	// 			boardingStop: "Park Street - Green Line - B Branch Berth",
+	// 			disboardStop: "Copley - Outbound"
+	// 		}]
+	// 	}
+	// ];
+
+	// return commutes;
 
 };
 
@@ -33,7 +55,10 @@ function myCommutes () {
 //loads various info from MBTA API
 function Mbta ($http, $q) {
 	var apiURL = function(query) {
-		return "http://realtime.mbta.com/developer/api/v2/" + query + "api_key=ed9Jx40ToEWg1VNZqWyYaw&format=json";
+
+		
+		return "http://realtime.mbta.com/developer/api/v2/" + query + "api_key=wX9NwuHnZU2ToO7GmGR9uw&format=json"; //developement api key
+		//return "http://realtime.mbta.com/developer/api/v2/" + query + "api_key=ed9Jx40ToEWg1VNZqWyYaw&format=json"; // production api Key
 	}
 
 	this.getRoutes = function() {
@@ -43,12 +68,10 @@ function Mbta ($http, $q) {
 				function(res) {
 					//organize list
 					var routes = {};
-					routes.subway = res.data.mode[0].route.concat(res.data.mode[1].route);
-					routes.cRail = res.data.mode[2].route;
-					routes.bus = res.data.mode[3].route;
-					routes.boat = res.data.mode[4].route;
-
-					console.log("success!");
+					routes[0] = res.data.mode[0].route.concat(res.data.mode[1].route);
+					routes[1] = res.data.mode[2].route;
+					routes[2] = res.data.mode[3].route;
+					routes[3] = res.data.mode[4].route;
 					return routes;
 			},
 			function(res) {
@@ -62,8 +85,6 @@ function Mbta ($http, $q) {
 		return $http.get(apiURL(query))
 			.then(
 				function(res) {
-
-					console.log(res.data.direction);
 					return res.data.direction;
 			},
 			function(res) {
