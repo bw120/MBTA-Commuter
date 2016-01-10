@@ -6,8 +6,6 @@ function MenuCtrl ($scope) {
 function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 	var self = this;
 	$scope.allCommutes = myCommutes;
-	//$scope.Data = myData;
-	
 
 	$scope.modes = ["Subway", "Bus", "Commuter Rail", "Boat"];
 
@@ -64,8 +62,30 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 
 }
 
-function DashboardCtrl ($scope, $location, myCommutes) {
-	$scope.myCommutes = myCommutes;
+function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
+
+	$scope.allCommutes = myCommutes;
+	$scope.allAlerts ={};
+
+	//Makes a request to get alerts for each line
+	var updateAlerts = function () {
+		for (x = 0; x < $scope.allCommutes.length; x++) {
+			for (y = 0; y < $scope.allCommutes[x].routeLegs.length; y++) {
+				Mbta.getAlerts($scope.allCommutes[x].routeLegs[y].lineID)
+						.then(function(data) {
+						    $scope.allAlerts[data.data.route_id] = data.data.alerts;
+						    console.log($scope.allAlerts);
+						});
+			}
+		}
+	};
+
+	//once commutes have been loaded from Firebase call updateAlerts() to get
+	//alert info from MBTA API
+	$scope.allCommutes.$loaded()
+		.then(function() {
+			updateAlerts();
+		});	
 
 }
 

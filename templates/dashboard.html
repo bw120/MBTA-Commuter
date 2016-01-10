@@ -3,12 +3,12 @@
 				<div ng-if="myCommutes.length <= 0">
 					<div class="commute">You have not setup any commutes</div>
 				</div>
-				<div ng-if="myCommutes.length > 0">
-					<div ng-repeat="commute in myCommutes">
+				<div ng-if="allCommutes.length > 0">
+					<div ng-repeat="commute in allCommutes">
 						<div class="commute">
 							<div class="commuteHeader">{{ commute.name }}</div>
 							<div class="commuteLegs" ng-repeat="leg in commute.routeLegs">
-								<span> {{leg.line}} - {{leg.direction}}</span> <span> Next predicted arrival </span> <span> alert status</span>
+								<span> {{leg.line}} - {{leg.direction}}</span> <span> Next predicted arrival </span>  nuber of alerts<span> {{ allAlerts[leg.lineID].length }}</span>
 
 
 							</div>
@@ -16,6 +16,17 @@
 
 
 					</div>
+
+					<span ng-repeat="lines in allAlerts">
+						<span ng-repeat="alert in lines">
+							<p>{{ alert.description_text }}</p>
+						
+
+
+						</span>
+
+
+					</span>
 				</div>
 
 

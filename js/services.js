@@ -19,7 +19,7 @@ function myCommutes ($firebaseArray) {
 
 	
 
-	// var commutes = $firebaseObject(ref);
+	// example of Json saved/returned from Firebase
 	// [
 	// 	{
 	// 	name: "sample commute",
@@ -47,7 +47,7 @@ function myCommutes ($firebaseArray) {
 	// 	}
 	// ];
 
-	// return commutes;
+
 
 };
 
@@ -86,6 +86,21 @@ function Mbta ($http, $q) {
 			.then(
 				function(res) {
 					return res.data.direction;
+			},
+			function(res) {
+				console.log("error!");
+				return res;
+			});
+
+	}
+
+	this.getAlerts = function(routes) {
+		var query = "alertsbyroute?route=" + routes + "&";
+		return $http.get(apiURL(query))
+			.then(
+				function(res) {
+					console.log(res);
+					return res;
 			},
 			function(res) {
 				console.log("error!");

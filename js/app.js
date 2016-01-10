@@ -24,7 +24,7 @@ function router ($routeProvider) {
 	})
 	.when('/dashboard', {
 		templateUrl: 'templates/dashboard.html',
-		controller: 'DashboardCtrl'
+		//controller: 'DashboardCtrl'
 	})
 	.when('/viewer', {
 		templateUrl: 'templates/viewer.html',
