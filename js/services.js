@@ -94,12 +94,13 @@ function Mbta ($http, $q) {
 
 	}
 
+	//gets service alerts for requested route
 	this.getAlerts = function(routes) {
 		var query = "alertsbyroute?route=" + routes + "&";
 		return $http.get(apiURL(query))
 			.then(
 				function(res) {
-					console.log(res);
+					
 					return res;
 			},
 			function(res) {
@@ -107,6 +108,50 @@ function Mbta ($http, $q) {
 				return res;
 			});
 
+	}
+
+	//get service arrival prediction for each route
+	this.getArrivals = function(route, stop, direction) {
+		var query = "predictionsbystop?stop=" + stop + "&";
+		var id = route + "-" + stop + "-" + direction;
+		return $http.get(apiURL(query))
+			.then(
+				function(res) {
+					var predictions = {};
+					// var id = route + "-" + stop + "-" + direction;
+					if (res.data.mode) {
+						for (x = 0; x < res.data.mode.length; x++) {
+							for (y = 0; y < res.data.mode[x].route.length; y++) {
+								if (res.data.mode[x].route[y].route_id == route) {
+									for (z = 0; z < res.data.mode[x].route[y].direction.length; z++) {
+										if (res.data.mode[x].route[y].direction[z].direction_name == direction) {
+											predictions = {
+															"id": id,
+															"route": route,
+															"stop" : stop,
+															"direction": direction,
+															"predictions": predictions.trips = res.data.mode[x].route[y].direction[z].trip};
+
+										}
+									}
+								}
+							}
+						}
+						
+					} else {
+						predictions = {
+										"id": id,
+										"route": route,
+										"stop" : stop,
+										"direction": direction,
+										"predictions": []};
+					}
+					return predictions;
+			},
+			function(res) {
+				console.log("error!");
+				return res;
+			});
 	}
 
 

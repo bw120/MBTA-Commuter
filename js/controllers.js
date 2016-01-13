@@ -66,6 +66,7 @@ function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
 
 	$scope.allCommutes = myCommutes;
 	$scope.allAlerts ={};
+	$scope.allPredictions =[];
 
 	//Makes a request to get alerts for each line
 	var updateAlerts = function () {
@@ -74,7 +75,19 @@ function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
 				Mbta.getAlerts($scope.allCommutes[x].routeLegs[y].lineID)
 						.then(function(data) {
 						    $scope.allAlerts[data.data.route_id] = data.data.alerts;
-						    console.log($scope.allAlerts);
+						});
+			}
+		}
+	};
+
+	//Makes a request to get predictions for each line
+	var updatePredictions = function () {
+		for (x = 0; x < $scope.allCommutes.length; x++) {
+			for (y = 0; y < $scope.allCommutes[x].routeLegs.length; y++) {
+				Mbta.getArrivals($scope.allCommutes[x].routeLegs[y].lineID, $scope.allCommutes[x].routeLegs[y].boardingStopID, $scope.allCommutes[x].routeLegs[y].direction)
+						.then(function(data) {
+							$scope.allPredictions[data.id] = [];
+							$scope.allPredictions[data.id].push(data.predictions);
 						});
 			}
 		}
@@ -85,6 +98,7 @@ function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
 	$scope.allCommutes.$loaded()
 		.then(function() {
 			updateAlerts();
+			updatePredictions();
 		});	
 
 }
