@@ -8,9 +8,21 @@ angular
 	.controller('LoginCtrl', LoginCtrl)
 	.controller('firebaseCtrl', firebaseCtrl)
 	.factory('myData', myData)
+	.factory('Auth', Auth)
 	.factory('myCommutes', myCommutes)
 	.service('Mbta', Mbta)
+	.run(authCheck)
 	.config(router);
+
+//If user is not logged in, route them to login screen
+function authCheck ($rootScope, $location) {
+	$rootScope
+	.$on("$routeChangeError", function(event, next, previous, error){
+		if (error === "AUTH_REQUIRED") {
+			$location.path("/login");
+		}
+	});
+}
 
 function router ($routeProvider) {
 	$routeProvider
@@ -19,21 +31,37 @@ function router ($routeProvider) {
 		controller: 'LoginCtrl'
 	})
 	.when('/builder', {
-		templateUrl: 'templates/builder.html'
-		// controller: 'BuilderCtrl'
+		templateUrl: 'templates/builder.html',
+		resolve: {
+		    "currentAuth": ["Auth", function(Auth) {
+		     return Auth.auth.$requireAuth();
+	    }]
+	  }
 	})
 	.when('/dashboard', {
 		templateUrl: 'templates/dashboard.html',
-		//controller: 'DashboardCtrl'
+		resolve: {
+		    "currentAuth": ["Auth", function(Auth) {
+		     return Auth.auth.$requireAuth();
+	    }]
+	  }
 	})
 	.when('/viewer', {
 		templateUrl: 'templates/viewer.html',
-		controller: 'ViewerCtrl'
+		resolve: {
+		    "currentAuth": ["Auth", function(Auth) {
+		     return Auth.auth.$requireAuth();
+	    }]
+	  }
 	})
 	//view for exploring MBTA system
 	.when('/explorer', {
 		templateUrl: 'templates/explorer.html',
-		controller: 'ExplorerCtrl'
+		resolve: {
+		    "currentAuth": ["Auth", function(Auth) {
+		     return Auth.auth.$requireAuth();
+	    }]
+	  }
 	})
 	.otherwise({
         redirectTo: '/dashboard'

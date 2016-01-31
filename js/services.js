@@ -5,16 +5,69 @@ function myData () {
 
 };
 
+//factory to control user authentication
+//TODO: create function to for forgotten password
+//		Creat function to update email
+function Auth ($firebaseAuth, $location) {
+	var ref = new Firebase("https://tcommutes.firebaseio.com");
+
+	var fb = {
+		username: "",
+		password: "",
+		auth: $firebaseAuth(ref),
+		login: function(usr, pass) {
+	    	
+	    	this.username = usr;
+	    	this.password = pass;
+	    
+	    	this.auth.$authWithPassword({
+		    	email: this.username,
+		        password: this.password
+	     	}).then(function (authData) {
+
+	     		this.authData = authData;
+	     		$location.path('/dashboard');
+	     	}).catch(function(error) {
+	     		console.log("Authentication failed: ", error);
+	     	});
+
+    	},
+    	logout: function() {
+    		this.auth.$unauth();
+    	},
+    	getAuthState: function() {
+    		var authData = this.auth.$getAuth();
+    		console.log(this.auth.$waitForAuth());
+
+    	},
+    	createUser: function(usr, pass) {
+
+			this.auth.$createUser({
+		        email: usr,
+		        password: pass
+		    }).then(function(userData) {
+		    	console.log("User created with uid: " + userData.uid);
+		    }).catch(function(error) {
+		    	console.log(error);
+		    });
+	    }
+    }
+
+
+	return fb;
+
+}
+
 
 //syncs user data with Firebase
-function myCommutes ($firebaseArray) {
+function myCommutes ($firebaseAuth) {
 
 
 		var ref = new Firebase("https://tcommutes.firebaseio.com/commutes");
 
 		//var commutes = ref.child(username);
 
-		return $firebaseArray(ref);
+		return $firebaseAuth(ref);
 
 
 	
@@ -55,7 +108,6 @@ function myCommutes ($firebaseArray) {
 //loads various info from MBTA API
 function Mbta ($http, $q) {
 	var apiURL = function(query) {
-
 		
 		return "http://realtime.mbta.com/developer/api/v2/" + query + "api_key=wX9NwuHnZU2ToO7GmGR9uw&format=json"; //developement api key
 		//return "http://realtime.mbta.com/developer/api/v2/" + query + "api_key=ed9Jx40ToEWg1VNZqWyYaw&format=json"; // production api Key
@@ -96,7 +148,7 @@ function Mbta ($http, $q) {
 
 	//gets service alerts for requested route
 	this.getAlerts = function(routes) {
-		var query = "alertsbyroute?route=" + routes + "&";
+		var query = "alertsbyroute?route=" + routes + "&include_access_alerts=false&";
 		return $http.get(apiURL(query))
 			.then(
 				function(res) {

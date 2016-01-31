@@ -1,4 +1,5 @@
 /** {border: 1px solid red;}*/
+
 html, 
 body {
 	font-family: 'Nunito', sans-serif;
@@ -8,107 +9,59 @@ body {
 	margin: 0;
 	height: 100%;
 	width: 100%;
+	overflow: hidden;
 }
-a {
-    text-decoration: none;
-    border-bottom: none;
-    padding:  8px 8px 8px 0;
-    color: #DF3A01;
-}
-
-h2 {
-	color: #DF3A01;
-}
-
-h3 {
-	color: #DF3A01;
-}
-
-.container {
+.appContainer {
 	position: inline;
 	background-color: white;
-	height: 100%;
+	min-height: 98%;
 	width: 100%;
 	max-width: 700px;
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 0;
+	margin: 1% auto 1% auto;
 	border: 0;
-	padding: 0;
+	padding: 1%;
 	top: 0;	
+	border: 1px solid gray;
+	border-radius: 5px;
 }
+
+
 
 .topBar {
 	width: 100%;
-	height: 8%;
-	background-color: black;
-	border: 0;
-	margin: 0;
-	padding: 0;
-	display: flex;
-	flex-direction: row;
-}
-
-.topBarLeft {
-	width: 20%;
-	height: 100%;
-	color: white;
-	position: relative;
-
-
-	
-	
-}
-.topBarRight {
-	width: 80%;
-	height: 100%;
-
-
-}
-.menu {
-	position: absolute;
-	width: 100%;
-	top: 100%;
-	background-color: #bdbdbd;
-	padding: 3%;
-}
-.menuItem {
-	padding: 3%;
-}
-.menuItem:hover {
-	background-color: #6E6E6E;
-}
-.menuIcon{
-	width: 30px;
-
-}
-.menuContainer {
-	padding: 6% 4% 4% 6%;
-	display: flex;
-	flex-direction: row;
-}
-.menuText {
-	height: 100%;
-	text-align: text-center;
-	margin-top: auto;
-	margin-bottom: auto;
-	padding: 0 2% 2% 2%;
-}
-.content {
-	padding: 2%;
-}
-
-.commute {
-	width: 98%;
 	height: 100px;
-	padding: 1%;
+	padding: 0px;
+	margin: 0px;
+}
+.dropdown {
+	position: absolute;
 	margin: 1%;
-	background-color: gray;
+	bottom: 1%;
+	right: 1%;
+	color: white;
+}
+.menu-icon {
+	color: gray;
+	font-size: 28px;
+}
 
+.content {
+	padding: 0% 2% 2% 2%;
 }
-.commuteHeader {
-	color: blue;
+
+.table-line {
+	width: 15%;
 }
-.commuteLegs {
-	margin: 1%;
+.able-dir {
+	width: 15%;
+}
+.table-arr {
+	width: 55%;
+}
+.table-alrt {
+	width: 15%;
+}
+.login {
+	max-width: 400px;
+	margin: 5% auto 2% auto;
 }

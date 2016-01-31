@@ -1,5 +1,9 @@
-function MenuCtrl ($scope) {
+function MenuCtrl ($scope, Auth, $location) {
 	$scope.menuOpen = false;
+	$scope.logout = function() {
+		Auth.logout();
+		$location.path('/login');
+	};
 
 }
 
@@ -31,7 +35,7 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 			    $scope.line = route.route_name;
 			    
 			});
-	}
+	};
 
 
 	$scope.addLeg = function() {
@@ -53,7 +57,8 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 		$scope.commute.edit = 1;
 
 
-	}
+	};
+
 	$scope.saveCommute = function() {
 		$scope.allCommutes.$add($scope.commute);
 		$location.path('/dashboard');
@@ -62,11 +67,12 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 
 }
 
-function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
+function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta) {
 
 	$scope.allCommutes = myCommutes;
 	$scope.allAlerts ={};
 	$scope.allPredictions =[];
+	var theUpdates;
 
 	//Makes a request to get alerts for each line
 	var updateAlerts = function () {
@@ -86,8 +92,7 @@ function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
 			for (y = 0; y < $scope.allCommutes[x].routeLegs.length; y++) {
 				Mbta.getArrivals($scope.allCommutes[x].routeLegs[y].lineID, $scope.allCommutes[x].routeLegs[y].boardingStopID, $scope.allCommutes[x].routeLegs[y].direction)
 						.then(function(data) {
-							$scope.allPredictions[data.id] = [];
-							$scope.allPredictions[data.id].push(data.predictions);
+							$scope.allPredictions[data.id] = data.predictions;
 						});
 			}
 		}
@@ -97,9 +102,39 @@ function DashboardCtrl ($scope, $location, myCommutes, Mbta) {
 	//alert info from MBTA API
 	$scope.allCommutes.$loaded()
 		.then(function() {
+			//get inital data
 			updateAlerts();
 			updatePredictions();
+			//then set alerts and predicitons up to update every 11 seconds
+			theUpdates = $interval(function() {
+				updateAlerts();
+				updatePredictions();
+				console.log("updated alerts and predicitons");
+			}, 11000);
+
 		});	
+	//cancel the interval requests for updates on arrival predictions and alerts
+  	$rootScope.$on("$routeChangeSuccess", 
+        function (event, current, previous, rejection) {
+        if (angular.isDefined(theUpdates)) {
+	        $interval.cancel(theUpdates);
+	        theUpdates = undefined;
+    	}
+  });
+
+}
+
+function LoginCtrl ($scope, $location, Auth) {
+	$scope.hasAccount = true;
+
+	$scope.createUser = function() {
+    	Auth.createUser($scope.email, $scope.password);
+    };
+
+    $scope.userLogin = function() {
+    	Auth.login($scope.email, $scope.password);
+
+    };
 
 }
 
@@ -111,9 +146,7 @@ function ViewerCtrl ($scope, myData) {
 function ExplorerCtrl ($scope, $location, myData) {
 	$scope.Data = myData;
 }
-function LoginCtrl ($scope, $location, myData) {
-	$scope.Data = myData;
-}
+
 
 function firebaseCtrl ($scope) {
 
