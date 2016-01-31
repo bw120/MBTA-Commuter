@@ -7,6 +7,7 @@
 				<input type="email" name="input" class="form-control" id="email" placeholder="Email" ng-model="email" required>
 			    <span role="alert">
 			      <span class="error" ng-show="login.input.$error.email">Not valid email!</span>
+			      <span class="error">{{logError}}</span>
 			    </span>
 
 			</div>

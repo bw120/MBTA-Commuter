@@ -125,16 +125,23 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 }
 
 function LoginCtrl ($scope, $location, Auth) {
+
 	$scope.hasAccount = true;
+	$scope.logError = null;
+
 
 	$scope.createUser = function() {
     	Auth.createUser($scope.email, $scope.password);
     };
 
     $scope.userLogin = function() {
-    	Auth.login($scope.email, $scope.password);
+    	var message = Auth.login($scope.email, $scope.password).then(function (message) {
+    		$scope.logError = message;
+    		console.log($scope.logError);
+    	});    		
 
     };
+    
 
 }
 

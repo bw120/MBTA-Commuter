@@ -15,12 +15,14 @@ function Auth ($firebaseAuth, $location) {
 		username: "",
 		password: "",
 		auth: $firebaseAuth(ref),
+		loginError: null,
 		login: function(usr, pass) {
 	    	
 	    	this.username = usr;
 	    	this.password = pass;
 	    
-	    	this.auth.$authWithPassword({
+	    
+	    	var login = this.auth.$authWithPassword({
 		    	email: this.username,
 		        password: this.password
 	     	}).then(function (authData) {
@@ -28,8 +30,11 @@ function Auth ($firebaseAuth, $location) {
 	     		this.authData = authData;
 	     		$location.path('/dashboard');
 	     	}).catch(function(error) {
-	     		console.log("Authentication failed: ", error);
+	     		var error = "Either the username or password are not correct.";
+	     		return error;
 	     	});
+
+	     	return login;
 
     	},
     	logout: function() {
