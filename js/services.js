@@ -8,14 +8,13 @@ function myData () {
 //factory to control user authentication
 //TODO: create function to for forgotten password
 //		Creat function to update email
-function Auth ($firebaseAuth, $location) {
+function Auth ($firebaseAuth, $firebaseArray, $location) {
 	var ref = new Firebase("https://tcommutes.firebaseio.com");
 
 	var fb = {
 		username: "",
 		password: "",
 		auth: $firebaseAuth(ref),
-		loginError: null,
 		login: function(usr, pass) {
 	    	
 	    	this.username = usr;
@@ -29,6 +28,7 @@ function Auth ($firebaseAuth, $location) {
 
 	     		this.authData = authData;
 	     		$location.path('/dashboard');
+
 	     	}).catch(function(error) {
 	     		var error = "Either the username or password are not correct.";
 	     		return error;
@@ -42,7 +42,7 @@ function Auth ($firebaseAuth, $location) {
     	},
     	getAuthState: function() {
     		var authData = this.auth.$getAuth();
-    		console.log(this.auth.$waitForAuth());
+    		return authData;
 
     	},
     	createUser: function(usr, pass) {
@@ -55,6 +55,9 @@ function Auth ($firebaseAuth, $location) {
 		    }).catch(function(error) {
 		    	console.log(error);
 		    });
+	    },
+	    getData: function() {
+	    	return $firebaseArray(ref);
 	    }
     }
 
@@ -65,15 +68,36 @@ function Auth ($firebaseAuth, $location) {
 
 
 //syncs user data with Firebase
-function myCommutes ($firebaseAuth) {
+function myCommutes ($firebaseArray, Auth) {
+
+	var commutes = {
+		getData: function () {
+		if (Auth.getAuthState().uid) {
+			var user = Auth.getAuthState().uid;
+			var ref = new Firebase("https://tcommutes.firebaseio.com/commutes/").child(user);
+			return $firebaseArray(ref);
+
+		} else {
+			var error = "authentication_error";
+			return error;
+		}
+
+		}
+		// ,
+		// updateOnAuth: function () {
+		// 	auth.$onAuth(function(authData) {
+	 //    	console.log("authentication change");
+	 //    	this.myData = this.getData();
+	 //    	console.log(this.myData);
+		//     });
+		// }
+	};
 
 
-		var ref = new Firebase("https://tcommutes.firebaseio.com/commutes");
+    return commutes;
+		
 
-		//var commutes = ref.child(username);
-
-		return $firebaseAuth(ref);
-
+		
 
 	
 

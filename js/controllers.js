@@ -1,5 +1,17 @@
 function MenuCtrl ($scope, Auth, $location) {
 	$scope.menuOpen = false;
+
+	//updates the user name logged in as on the top bar
+    $scope.auth = Auth.auth;
+    $scope.auth.$onAuth(function(authData) {
+
+    	if (Auth.getAuthState() != null) {
+			$scope.user = Auth.getAuthState().password.email;
+			console.log(Auth.getAuthState().uid);
+		}
+    });
+
+
 	$scope.logout = function() {
 		Auth.logout();
 		$location.path('/login');
@@ -9,7 +21,7 @@ function MenuCtrl ($scope, Auth, $location) {
 
 function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 	var self = this;
-	$scope.allCommutes = myCommutes;
+	$scope.allCommutes = myCommutes.getData();
 
 	$scope.modes = ["Subway", "Bus", "Commuter Rail", "Boat"];
 
@@ -68,11 +80,13 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 }
 
 function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta) {
-
-	$scope.allCommutes = myCommutes;
+	// var commutes = myCommutes;
+	$scope.allCommutes = myCommutes.getData();
+	// commutes.updateOnAuth();
 	$scope.allAlerts ={};
 	$scope.allPredictions =[];
 	var theUpdates;
+	
 
 	//Makes a request to get alerts for each line
 	var updateAlerts = function () {
@@ -137,7 +151,6 @@ function LoginCtrl ($scope, $location, Auth) {
     $scope.userLogin = function() {
     	var message = Auth.login($scope.email, $scope.password).then(function (message) {
     		$scope.logError = message;
-    		console.log($scope.logError);
     	});    		
 
     };
