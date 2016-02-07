@@ -1,3 +1,5 @@
+/** { border: 1px solid red;}*/
+
 html, body {
 	width: 100%;
 	height: 100%;
@@ -179,7 +181,7 @@ strong {
 	padding: 2%;
 	font-size: 20px;
 	text-transform: capitalize;
-	width: 50%;
+	width: 80%;
 	height: 5%;
 	text-align: left;
 }
@@ -196,7 +198,7 @@ strong {
 	font-size: 16px;
 	background-color: white;
 	color: #a6a6a6;
-	width: 50%;
+	width: 20%;
 	height: 5%;
 	text-align: right;
 }
@@ -227,7 +229,7 @@ td, th {
 
 label, input {
 	display: block;
-	width: 100%;
+	width: 96%;
 	margin: auto;
 	font-size: 1em;
 }
@@ -338,11 +340,13 @@ button:active {
 
 	.box {
 		position: relative;
-		width: 100%;
+		width: 95%;
 		border: 0px;
 		border-radius: 0;
 		padding: 5% 0 0 0;
-		margin: 0;
+		margin: 2%;
+		border: 0;
+		box-shadow: 2px 2px 10px rgba(0, 0, 0, .5);
 	}
 
 	.commute-header {
@@ -350,23 +354,26 @@ button:active {
 		left: 0;
 		top: 0;
 		width: calc(99% - 3px);
-		background-color: #808080;
-		border: 2px solid #808080;
+		/*background-color: #808080;*/
+		/*border-top: 1px solid #e6e6e6;*/
 		border-radius: 0;
-		padding: 1% 0 1% 2%;
+		padding: 1% 1% 0 2%;
 		margin: 0;
-		color: #9DE96C;
-		font-size: 12pt;
+		color: #368A00;
+		font-size: 14pt;
 		font-weight: 100;
 	}
 
-	.commute {
-		margin: 0% 0% 0% 2%;
+	.commute{
+		margin: 5%;
+		padding: 1%
+
 	}
 
-	.commute-name h4 {
+	.commute-name{
 		font-size: 12pt;
 		padding: 0;
+		margin: 2% 0 0 0;
 	}
 
 	.commute-item {
