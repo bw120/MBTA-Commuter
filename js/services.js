@@ -74,7 +74,7 @@ function myCommutes ($firebaseArray, Auth) {
 		getData: function () {
 		if (Auth.getAuthState().uid) {
 			var user = Auth.getAuthState().uid;
-			var ref = new Firebase("https://tcommutes.firebaseio.com/commutes/").child(user);
+			var ref = new Firebase("https://tcommutes.firebaseio.com/").child("commutes").child(user);
 			return $firebaseArray(ref);
 
 		} else {
