@@ -1,16 +1,19 @@
 function MenuCtrl ($scope, Auth, $location) {
 	$scope.menuOpen = false;
-
+	$scope.showMenu = false;
 	//updates the user name logged in as on the top bar
     $scope.auth = Auth.auth;
     $scope.auth.$onAuth(function(authData) {
 
     	if (Auth.getAuthState() != null) {
 			$scope.user = Auth.getAuthState().password.email;
-			console.log(Auth.getAuthState().uid);
 		}
     });
 
+    $scope.doSomething = function () {
+    	console.log("hey");
+    	$scope.showMenu = true;
+    };
 
 	$scope.logout = function() {
 		Auth.logout();
@@ -83,6 +86,7 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 	// var commutes = myCommutes;
 	$scope.allCommutes = myCommutes.getData();
 	// commutes.updateOnAuth();
+	$scope.showAlert = [];
 	$scope.allAlerts ={};
 	$scope.allPredictions =[];
 	var theUpdates;

@@ -1,61 +1,40 @@
 		<div ng-controller="DashboardCtrl">
-			<h2>Dashboard</h2>
-				<div ng-if="myCommutes.length <= 0">
-					<div class="commute">You have not setup any commutes</div>
+			<h1>Dashboard</h1>
+				<div ng-if="allCommutes.length <= 0">
+					<div class="commute">You have not setup any commutes. Click <a href="#/builder" ng-click="showMenu = false">here</a> to setup your commute.</div>
 				</div>
 				<div ng-if="allCommutes.length > 0">
-					<div class="itemBox" ng-repeat="commute in allCommutes">
-						<div class="commuteHeader text-capitalize"><h4>{{ commute.name }}</h4></div>
-						<table class="table table-hover">
-							<thead>
-								<tr>
-								  <th class="table-line">Line</th>
-								  <th class="table-dir">Direction</th>
-								  <th class="table-arr">Next Arrival</th>
-								  <th class="table-alrt">Alerts</th>
-						  		</tr>
-						  	</thead>
-							<tbody>
-								<tr ng-repeat="leg in commute.routeLegs">
-								  <td>{{leg.line}}</td>
-								  <td>{{leg.direction}}</td>
-								  <td ><span class="predict-station">{{leg.boardingStop}}: </span><em class="predict-time" ng-repeat="prediction in $parent.allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction] | orderBy : prediction.pre_away | limitTo: 3">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em ng-hide="allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction].length > 0">[predictions unavailable]</em></td>
-								  <td> <a data-toggle="modal" data-target="#{{leg.lineID}}" ng-hide="allAlerts[leg.lineID].length == 0" ><span class="glyphicon glyphicon-alert"> <span class="badge">{{ allAlerts[leg.lineID].length }}</span></a>
+					<div class="box" ng-repeat="commute in allCommutes">
+						<h3 class="commute-header">{{ commute.name }}</h3>
+						<div class="commute" ng-repeat="leg in commute.routeLegs">
+							<h4 class="commute-name">{{leg.lineID}} / {{leg.direction}} / {{ leg.boardingStop}}</h4>
+							<ul>
+								<li class="commute-item"><strong class="commuter-detail-header">Predictions:</strong><span class="commute-detail"><em ng-repeat="prediction in $parent.allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction] | orderBy : prediction.pre_away | limitTo: 3">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em  ng-hide="allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction].length > 0">Unavailable</em></span></li>
+								<li class="commute-item"><strong class="commuter-detail-header">Alerts: </strong> <span class="alerts commute-detail"> <a data-toggle="modal" ng-click="showAlert[leg.lineID] = !showAlert[leg.lineID]" ng-show="allAlerts[leg.lineID].length > 0" ><span class="badge">{{ allAlerts[leg.lineID].length }}</span></a>
+									</span></li>
+							</ul>
 
-		  							<!-- Popup window to show alert information -->
-									<div class="modal fade" id="{{leg.lineID}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-									  <div class="modal-dialog">
-									    <div class="modal-content">
-									      <div class="modal-header">
-									        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									        <h4 class="modal-title">Alerts for {{ leg.line }}</h4>
-									      </div>
-									      <div class="modal-body" ng-repeat="alert in allAlerts[leg.lineID] | orderBy: '-last_modified_dt'">
-									      	<div >
-										        <h4>{{ alert.effect_name }} - {{ alert.cause_name }}</h4>
-										        <h5>{{alert.severity}}</h5>
-										        <h5>{{alert.alert_lifecycle}}</h5>
-										        <p>{{ alert.header_text }}</p>
-										    </div>
-									      </div>
-									      <div class="modal-footer">
-									        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-									      </div>
-									    </div><!-- /.modal-content -->
-									  </div><!-- /.modal-dialog -->
-									</div><!-- /.modal -->
-
-
-
-
-								  </td>
-						  		</tr>
-						  	</tbody>
-						</table>
+								<!-- Popup window to show alert information -->
+								<div class="modal" ng-show="showAlert[leg.lineID]" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								      	<div class="modal-title">Alerts for {{ leg.line }}</div>
+								        <div class="close"><a ng-click="showAlert[leg.lineID] = !showAlert[leg.lineID]" aria-label="Close"><span aria-hidden="true">Close [X]</span></a></div>
+								        
+								      </div>
+								      <div class="modal-body" >
+								      	<div class="alert-item" ng-repeat="alert in allAlerts[leg.lineID] | orderBy: '-last_modified_dt'">
+									        <h3>{{ alert.effect_name }} - {{ alert.cause_name }}</h3>
+									        <h4>{{alert.severity}} - {{alert.alert_lifecycle}}</h4>
+									        <p>{{ alert.header_text }}</p>
+									    </div>
+								      </div>
+								    </div>
+								  </div>
+								</div>
+						</div>
 					</div>
-
-
-
 				</div>
 
 
