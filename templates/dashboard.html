@@ -9,7 +9,7 @@
 						<div class="commute" ng-repeat="leg in commute.routeLegs">
 							<h4 class="commute-name">{{leg.lineID}} / {{leg.direction}} / {{ leg.boardingStop}}</h4>
 							<ul>
-								<li class="commute-item"><strong class="commuter-detail-header">Predictions:</strong><span class="commute-detail"><em ng-repeat="prediction in $parent.allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction] | orderBy : prediction.pre_away | limitTo: 3">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em  ng-hide="allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction].length > 0">Unavailable</em></span></li>
+								<li class="commute-item"><strong class="commuter-detail-header">Predictions:</strong><span class="commute-detail"><em ng-repeat="prediction in allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction] | orderBy:pre_away">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em  ng-hide="allPredictions[leg.lineID + '-' + leg.boardingStopID + '-' + leg.direction].length > 0">Unavailable</em></span></li>
 								<li class="commute-item"><strong class="commuter-detail-header">Alerts: </strong> <span class="alerts commute-detail"> <a data-toggle="modal" ng-click="showAlert[leg.lineID] = !showAlert[leg.lineID]" ng-show="allAlerts[leg.lineID].length > 0" ><span class="badge">{{ allAlerts[leg.lineID].length }}</span></a>
 									</span></li>
 							</ul>

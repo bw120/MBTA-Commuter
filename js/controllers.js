@@ -63,6 +63,7 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 	$scope.showAlert = [];
 	$scope.allAlerts ={};
 	$scope.allPredictions =[];
+	$scope.predicate = "pre_away";
 	var theUpdates;
 
 	//When logging out destroy Firebase reference.
@@ -143,10 +144,13 @@ function AccountCtrl ($scope, $location, Auth) {
     });
 
 	$scope.changePass = function() {
-		if ($scope.newPassword === $scope.confirmPassword) {
+		console.log($scope.OldPassword != undefined);
+		if ($scope.newPassword === $scope.confirmPassword && $scope.OldPassword != undefined && $scope.newPassword != undefined && $scope.confirmPassword != undefined ) {
 			$scope.message = Auth.updatePass($scope.email, $scope.OldPassword, $scope.newPassword).then(function (message) {
 	    		$scope.logError = message;
 	    	});
+		} else if ($scope.OldPassword === undefined || $scope.newPassword === undefined || $scope.confirmPassword === undefined ){
+			$scope.logError = "One of the required fields is empty!";
 		} else {
 			$scope.logError = "Please re-type your new password. It does not match!"
 		}

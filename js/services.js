@@ -65,8 +65,8 @@ function Auth ($firebaseAuth, $firebaseArray, $location, $rootScope) {
 			  console.log(message);
 			  return message;
 			}).catch(function(error) {
-			  console.error("Error: ", error);
-			  return "Sorry, an error occured. Please try again later";
+			  console.log(error);
+			  return "Error: Check that your email was entered correctly";
 			});
 	    },
 	    updatePass: function(email, oldEmail, newEmail) {
