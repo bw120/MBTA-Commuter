@@ -1,0 +1,29 @@
+<div ng-controller="AccountCtrl">
+	<h2>Change Password</h2>
+	<div class="inner-box">
+		
+		<form name="ChangePass">
+			<div class="input-alert">{{logError}}</div>
+			<div class="form-group">
+				<label>Email:</label>
+				<span class="field">{{email}}</span>
+			</div>
+			<div class="form-group">
+				<label for="password">Old Password</label>
+				<input type="password" class="form-control" id="oldPassword" placeholder="Old Password" ng-model="OldPassword" required>
+			</div>
+
+			<div class="form-group">
+				<label for="password">New Password</label>
+				<input type="password" class="form-control" id="password" placeholder="Password" ng-model="newPassword" required>
+			</div>
+			<div class="form-group">
+				<label for="passwordConfirm">Re-enter your Password</label>
+				<input type="password" class="form-control" id="passwordConfirm" placeholder="Re-type your Password" ng-model="confirmPassword" required>
+			</div>
+			<button type="submit" class="btn btn-default" ng-click="changePass()">Submit</button>
+			
+		</form>
+	</div>
+
+</div>
