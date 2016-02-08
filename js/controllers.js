@@ -1,27 +1,3 @@
-function MenuCtrl ($scope, Auth, $location) {
-	$scope.menuOpen = false;
-	$scope.showMenu = false;
-	//updates the user name logged in as on the top bar
-    $scope.auth = Auth.auth;
-    $scope.auth.$onAuth(function(authData) {
-
-    	if (Auth.getAuthState() != null) {
-			$scope.user = Auth.getAuthState().password.email;
-		}
-    });
-
-    $scope.doSomething = function () {
-    	console.log("hey");
-    	$scope.showMenu = true;
-    };
-
-	$scope.logout = function() {
-		Auth.logout();
-		$location.path('/login');
-	};
-
-}
-
 function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 	var self = this;
 	$scope.allCommutes = myCommutes.getData();
@@ -91,7 +67,6 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 
 	//When logging out destroy Firebase reference.
 	$rootScope.$on("logout", function(){
-		console.log("hey, I'm logged out");
 		$scope.allCommutes.$destroy();
 	});
 
@@ -145,6 +120,39 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 
 }
 
+function MenuCtrl ($scope, Auth, $location) {
+	$scope.menuOpen = false;
+	$scope.showMenu = false;
+
+
+	$scope.logout = function() {
+		Auth.logout();
+		$location.path('/login');
+	};
+
+};
+
+function AccountCtrl ($scope, $location, Auth) {
+	$scope.logError = null;
+    $scope.auth = Auth.auth;
+
+    $scope.auth.$onAuth(function(authData) {
+    	if (Auth.getAuthState() != null) {
+			$scope.email = Auth.getAuthState().password.email;
+		}
+    });
+
+	$scope.changePass = function() {
+		if ($scope.newPassword === $scope.confirmPassword) {
+			$scope.message = Auth.updatePass($scope.email, $scope.OldPassword, $scope.newPassword).then(function (message) {
+	    		$scope.logError = message;
+	    	});
+		} else {
+			$scope.logError = "Please re-type your new password. It does not match!"
+		}
+	}
+}
+
 function LoginCtrl ($scope, $location, Auth) {
 
 	$scope.whichToShow = 1;
@@ -152,18 +160,26 @@ function LoginCtrl ($scope, $location, Auth) {
 
 
 	$scope.createUser = function() {
-    	Auth.createUser($scope.email, $scope.password).then(function (message) {
-    		$scope.logError = message;
-    	});    		
+		if ($scope.password === $scope.confirmPassword) {
+	    	Auth.createUser($scope.email, $scope.password).then(function (message) {
+	    		$scope.logError = message;
+	    	});   
+		} else {
+			$scope.logError = "Please re-type your new password. It does not match!"
+		} 		
     };
 
     $scope.userLogin = function() {
-    	var message = Auth.login($scope.email, $scope.password);
+    	var message = Auth.login($scope.email, $scope.password).then(function (message) {
+    		$scope.logError = message;
+    	});
 
     };
 
     $scope.passReset = function() {
-    	Auth.resetPass($scope.email);
+    	Auth.resetPass($scope.email).then(function (message) {
+    		$scope.logError = message;
+    	});
 
 
     }

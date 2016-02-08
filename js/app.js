@@ -6,6 +6,7 @@ angular
 	.controller('ViewerCtrl', ViewerCtrl)
 	.controller('ExplorerCtrl', ExplorerCtrl)
 	.controller('LoginCtrl', LoginCtrl)
+	.controller('AccountCtrl', AccountCtrl)
 	.controller('firebaseCtrl', firebaseCtrl)
 	.factory('myData', myData)
 	.factory('Auth', Auth)
@@ -46,17 +47,8 @@ function router ($routeProvider) {
 	    }]
 	  }
 	})
-	.when('/viewer', {
-		templateUrl: 'templates/viewer.html',
-		resolve: {
-		    "currentAuth": ["Auth", function(Auth) {
-		     return Auth.auth.$requireAuth();
-	    }]
-	  }
-	})
-	//view for exploring MBTA system
-	.when('/explorer', {
-		templateUrl: 'templates/explorer.html',
+	.when('/accountMgr', {
+		templateUrl: 'templates/accountMgr.html',
 		resolve: {
 		    "currentAuth": ["Auth", function(Auth) {
 		     return Auth.auth.$requireAuth();

@@ -249,6 +249,13 @@ input, button, select {
 	outline: none;
 }
 
+.field {
+	display: block;
+	margin: 1% 0 3% 0;
+	font-size: 12pt;
+	height: 1.5em;
+}
+
 button {
 	background-color: white;
 }

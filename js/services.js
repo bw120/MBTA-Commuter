@@ -21,7 +21,7 @@ function Auth ($firebaseAuth, $firebaseArray, $location, $rootScope) {
 	    	this.password = pass;
 	    
 	    
-	    	var login = this.auth.$authWithPassword({
+	    	return this.auth.$authWithPassword({
 		    	email: this.username,
 		        password: this.password
 	     	}).then(function (authData) {
@@ -33,8 +33,6 @@ function Auth ($firebaseAuth, $firebaseArray, $location, $rootScope) {
 	     		var error = "Either the username or password are not correct.";
 	     		return error;
 	     	});
-
-	     	return login;
 
     	},
     	logout: function() {
@@ -60,14 +58,29 @@ function Auth ($firebaseAuth, $firebaseArray, $location, $rootScope) {
 		    });
 	    },
 	    resetPass: function(email) {
-	    	this.auth.$resetPassword({
+	    	return this.auth.$resetPassword({
 			  	email: email
 			}).then(function() {
-			  console.log("Password reset email sent successfully!");
-			  return "Password reset email sent successfully!";
+				var message = "Password reset email sent successfully!"
+			  console.log(message);
+			  return message;
 			}).catch(function(error) {
 			  console.error("Error: ", error);
 			  return "Sorry, an error occured. Please try again later";
+			});
+	    },
+	    updatePass: function(email, oldEmail, newEmail) {
+
+	    	return this.auth.$changePassword({
+			  email: email,
+			  oldPassword: oldEmail,
+			  newPassword: newEmail
+			}).then(function() {
+			  console.log("Password changed successfully!");
+			  return "Password changed successfully!"
+			}).catch(function(error) {
+			  var message = "" + error;
+			  return message;
 			});
 	    }
 	        	
