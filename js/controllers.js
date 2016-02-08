@@ -82,15 +82,18 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 
 }
 
-function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta) {
-	// var commutes = myCommutes;
+function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta, $rootScope) {
 	$scope.allCommutes = myCommutes.getData();
-	// commutes.updateOnAuth();
 	$scope.showAlert = [];
 	$scope.allAlerts ={};
 	$scope.allPredictions =[];
 	var theUpdates;
-	
+
+	//When logging out destroy Firebase reference.
+	$rootScope.$on("logout", function(){
+		console.log("hey, I'm logged out");
+		$scope.allCommutes.$destroy();
+	});
 
 	//Makes a request to get alerts for each line
 	var updateAlerts = function () {
@@ -144,20 +147,26 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 
 function LoginCtrl ($scope, $location, Auth) {
 
-	$scope.hasAccount = true;
+	$scope.whichToShow = 1;
 	$scope.logError = null;
 
 
 	$scope.createUser = function() {
-    	Auth.createUser($scope.email, $scope.password);
+    	Auth.createUser($scope.email, $scope.password).then(function (message) {
+    		$scope.logError = message;
+    	});    		
     };
 
     $scope.userLogin = function() {
-    	var message = Auth.login($scope.email, $scope.password).then(function (message) {
-    		$scope.logError = message;
-    	});    		
+    	var message = Auth.login($scope.email, $scope.password);
 
     };
+
+    $scope.passReset = function() {
+    	Auth.resetPass($scope.email);
+
+
+    }
     
 
 }

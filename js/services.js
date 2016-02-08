@@ -8,7 +8,7 @@ function myData () {
 //factory to control user authentication
 //TODO: create function to for forgotten password
 //		Creat function to update email
-function Auth ($firebaseAuth, $firebaseArray, $location) {
+function Auth ($firebaseAuth, $firebaseArray, $location, $rootScope) {
 	var ref = new Firebase("https://tcommutes.firebaseio.com");
 
 	var fb = {
@@ -39,6 +39,7 @@ function Auth ($firebaseAuth, $firebaseArray, $location) {
     	},
     	logout: function() {
     		this.auth.$unauth();
+    		$rootScope.$broadcast('logout');
     	},
     	getAuthState: function() {
     		var authData = this.auth.$getAuth();
@@ -47,20 +48,30 @@ function Auth ($firebaseAuth, $firebaseArray, $location) {
     	},
     	createUser: function(usr, pass) {
 
-			this.auth.$createUser({
+			return this.auth.$createUser({
 		        email: usr,
 		        password: pass
 		    }).then(function(userData) {
 		    	console.log("User created with uid: " + userData.uid);
+		    	return "User created with uid: " + userData.uid;
 		    }).catch(function(error) {
 		    	console.log(error);
+		    	return "Sorry, an error occured. We were not able to set up an account";
 		    });
 	    },
-	    getData: function() {
-	    	return $firebaseArray(ref);
+	    resetPass: function(email) {
+	    	this.auth.$resetPassword({
+			  	email: email
+			}).then(function() {
+			  console.log("Password reset email sent successfully!");
+			  return "Password reset email sent successfully!";
+			}).catch(function(error) {
+			  console.error("Error: ", error);
+			  return "Sorry, an error occured. Please try again later";
+			});
 	    }
+	        	
     }
-
 
 	return fb;
 
@@ -72,64 +83,20 @@ function myCommutes ($firebaseArray, Auth) {
 
 	var commutes = {
 		getData: function () {
-		if (Auth.getAuthState().uid) {
-			var user = Auth.getAuthState().uid;
-			var ref = new Firebase("https://tcommutes.firebaseio.com/").child("commutes").child(user);
-			return $firebaseArray(ref);
+			if (Auth.getAuthState().uid) {
+				var user = Auth.getAuthState().uid;
+				var ref = new Firebase("https://tcommutes.firebaseio.com/").child("commutes").child(user);
+				return $firebaseArray(ref);
 
-		} else {
-			var error = "authentication_error";
-			return error;
+			} else {
+				var error = "authentication_error";
+				return error;
+			}
 		}
 
-		}
-		// ,
-		// updateOnAuth: function () {
-		// 	auth.$onAuth(function(authData) {
-	 //    	console.log("authentication change");
-	 //    	this.myData = this.getData();
-	 //    	console.log(this.myData);
-		//     });
-		// }
 	};
 
-
     return commutes;
-		
-
-		
-
-	
-
-	// example of Json saved/returned from Firebase
-	// [
-	// 	{
-	// 	name: "sample commute",
-	// 		routeLegs: [{
-	// 			modeID: "0",
-	// 			mode: "Subway",
-	// 			lineID: "Red",
-	// 			line: "Red Line",
-	// 			direction: "Southbound",
-	// 			boardingStopID: "70063",
-	// 			disboardStopID: "70073",
-	// 			boardingStop: "Davis - Inbound",
-	// 			disboardStop: "Charles/MGH - Inbound"
-	// 		},{
-	// 			modeID: "0",
-	// 			mode: "Subway",
-	// 			lineID: "Green-B",
-	// 			line: "Green Line B",
-	// 			direction: "Westbound",
-	// 			boardingStopID: "70196",
-	// 			disboardStopID: "70155",
-	// 			boardingStop: "Park Street - Green Line - B Branch Berth",
-	// 			disboardStop: "Copley - Outbound"
-	// 		}]
-	// 	}
-	// ];
-
-
 
 };
 
