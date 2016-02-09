@@ -169,7 +169,10 @@ function LoginCtrl ($scope, $location, Auth) {
 	$scope.createUser = function() {
 		if ($scope.password === $scope.confirmPassword) {
 	    	Auth.createUser($scope.email, $scope.password).then(function (message) {
+	    		$scope.whichToShow = 1;
+	    		console.log("$scope.whichToShow");
 	    		$scope.logError = message;
+
 	    	});   
 		} else {
 			$scope.logError = "Please re-type your new password. It does not match!"

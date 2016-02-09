@@ -51,7 +51,7 @@ function Auth ($firebaseAuth, $firebaseArray, $location, $rootScope) {
 		        password: pass
 		    }).then(function(userData) {
 		    	console.log("User created with uid: " + userData.uid);
-		    	return "User created with uid: " + userData.uid;
+		    	return "Account created! Please login using your email and password";
 		    }).catch(function(error) {
 		    	console.log(error);
 		    	return "Sorry, an error occured. We were not able to set up an account";
