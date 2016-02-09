@@ -16,7 +16,19 @@ view of your commute instad of just one line at a time. This is an advantage for
 
 ##Features
 This project is still in the works. Not many features function yet. Here is a list of features to come
-- Dashboard to list all your defined commutes and to get an overall status of lines
-- Detail view of your commute. Shows more detail for a particular commute than the Dashboard
-- Crowd sourced service alert. Displays alerts submitted by other viewerss
-- Possibly twitter integration.
+
+###Current features
+- Dashboard screen to list all of your defined commutes. It shows arrival time predictions and alerts for each line.
+- User accounts. You can create an account so that your defined commutes are saved and so that you can login from any device.
+
+###Upcoming features
+- Option to build commute based on starting and destination address rather than manually defining.
+- Crowd sourced service alert. Displays alerts submitted by other viewers
+- Twitter integration. Use Twitter API to list tweets regarding selected lines. This serves as an additional crowd source for info that may be helpful for your commute.
+
+##Quick Start Guide
+- Open the app on your smartphone, tablet, laptop or computer. The user interface will adapt to your screen size. 
+- Click the "Sign-up" link at the bottom of the login page. Enter your email and create a password. Click the submit button to create your account.
+- Navigate to the "Build Commute" page from the link on the menu.
+- Enter the transit mode, line and details for each leg in your commute and save commute.
+- Go to the Dashboard page using the menu in the upper left corner. It will list all the commutes you have defined and will show alerts and arrival predictions.
