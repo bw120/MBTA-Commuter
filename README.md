@@ -7,7 +7,6 @@ On the main page it will alert you to next arrival preditions and of any service
 view of your commute instad of just one line at a time. This is an advantage for those who have to utilize multiple lines per commute.
 
 ##JavaScript Libraries used
-- jQuery
 - AngularJS
 
 ##APIs used
