@@ -88,8 +88,11 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 		for (x = 0; x < $scope.allCommutes.length; x++) {
 			for (y = 0; y < $scope.allCommutes[x].routeLegs.length; y++) {
 				Mbta.getArrivals($scope.allCommutes[x].routeLegs[y].lineID, $scope.allCommutes[x].routeLegs[y].boardingStopID, $scope.allCommutes[x].routeLegs[y].direction)
-						.then(function(data) {
-							$scope.allPredictions[data.id] = data.predictions;
+						.then(function(data) {		
+							var predictions = data.predictions;
+							$scope.allPredictions[data.id] = predictions.sort(function(a, b) {
+							    return parseInt(a.pre_away) - parseInt(b.pre_away);
+							});
 						});
 			}
 		}
