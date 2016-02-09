@@ -15,7 +15,7 @@ view of your commute instad of just one line at a time. This is an advantage for
  - Firebase
 
 ##Features
-This project is still in the works. Not many features function yet. Here is a list of features to come
+This project is still in the works. I am still working to refine features and develop new ones. Here is a list of what is available and what is to come.
 
 ###Current features
 - Dashboard screen to list all of your defined commutes. It shows arrival time predictions and alerts for each line.
