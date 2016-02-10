@@ -1,10 +1,3 @@
-function myData () {
-
-
-	return {message: "this is my message"};
-
-};
-
 //factory to control user authentication
 //TODO: create function to for forgotten password
 //		Creat function to update email
@@ -108,9 +101,7 @@ function myCommutes ($firebaseArray, Auth) {
 		}
 
 	};
-
     return commutes;
-
 };
 
 
@@ -168,7 +159,6 @@ function Mbta ($http, $q) {
 				console.log("error!");
 				return res;
 			});
-
 	}
 
 	//get service arrival prediction for each route

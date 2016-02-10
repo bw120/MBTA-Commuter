@@ -1,4 +1,4 @@
-function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
+function BuilderCtrl ($scope, $location, myCommutes, Mbta) {
 	var self = this;
 	$scope.allCommutes = myCommutes.getData();
 
@@ -28,7 +28,6 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 			});
 	};
 
-
 	$scope.addLeg = function() {
 
 		var leg = {
@@ -47,14 +46,12 @@ function BuilderCtrl ($scope, $location, myData, myCommutes, Mbta) {
 		$scope.leg = null;
 		$scope.commute.edit = 1;
 
-
 	};
 
 	$scope.saveCommute = function() {
 		$scope.allCommutes.$add($scope.commute);
 		$location.path('/dashboard');
 	};
-
 
 }
 
@@ -90,9 +87,11 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 				Mbta.getArrivals($scope.allCommutes[x].routeLegs[y].lineID, $scope.allCommutes[x].routeLegs[y].boardingStopID, $scope.allCommutes[x].routeLegs[y].direction)
 						.then(function(data) {		
 							var predictions = data.predictions;
-							$scope.allPredictions[data.id] = predictions.sort(function(a, b) {
-							    return parseInt(a.pre_away) - parseInt(b.pre_away);
-							});
+							if (predictions) {
+								$scope.allPredictions[data.id] = predictions.sort(function(a, b) {
+								    return parseInt(a.pre_away) - parseInt(b.pre_away);
+								});
+							}
 						});
 			}
 		}
@@ -121,13 +120,11 @@ function DashboardCtrl ($scope, $location, $interval, $route, $rootScope, myComm
 	        theUpdates = undefined;
     	}
   });
-
 }
 
 function MenuCtrl ($scope, Auth, $location) {
 	$scope.menuOpen = false;
 	$scope.showMenu = false;
-
 
 	$scope.logout = function() {
 		Auth.logout();
@@ -165,12 +162,10 @@ function LoginCtrl ($scope, $location, Auth) {
 	$scope.whichToShow = 1;
 	$scope.logError = null;
 
-
 	$scope.createUser = function() {
 		if ($scope.password === $scope.confirmPassword) {
 	    	Auth.createUser($scope.email, $scope.password).then(function (message) {
 	    		$scope.whichToShow = 1;
-	    		console.log("$scope.whichToShow");
 	    		$scope.logError = message;
 
 	    	});   
@@ -190,23 +185,5 @@ function LoginCtrl ($scope, $location, Auth) {
     	Auth.resetPass($scope.email).then(function (message) {
     		$scope.logError = message;
     	});
-
-
     }
-    
-
-}
-
-
-function ViewerCtrl ($scope, myData) {
-	$scope.Data = myData;
-}
-
-function ExplorerCtrl ($scope, $location, myData) {
-	$scope.Data = myData;
-}
-
-
-function firebaseCtrl ($scope) {
-
 }
