@@ -168,7 +168,7 @@ function Mbta($http, $q) {
 		//this request pulls predictions from the MBTA Api
 		var request1 = $http.get(apiURL(query1));
 		//this pulls from pre-configured json files for list of scheduled trips gong to the destination stop
-		var request2 = $http.get("http://thebenwright.com/json/stops/" + exitStop + ".json");
+		var request2 = $http.get("../json/routes/" + route + ".json");
 
 		//sorts data and pull out predictions just for the selected route and direction
 		var sortPredictions = function(data) {
@@ -194,13 +194,29 @@ function Mbta($http, $q) {
 			return predictions;
 		};
 
+		var sortDest = function(data) {
+
+			for (var t = 0; t < data.data.direction.length; t++) {
+
+				if (data.data.direction[t].direction_name === direction) {
+					for (var f = 0; f < data.data.direction[t].stop.length; f++) {
+						if (data.data.direction[t].stop[f].stop_id === exitStop) {
+							var tripIDs = data.data.direction[t].stop[f].trip_ids;
+						}
+					}
+				}
+			}
+			return tripIDs;
+		};
+
+
 		//fire off two request to the MBTA API
 		//once the data comes back from both, filter on the tripID's that will go to the destination stop
 		return $q.all([request1, request2]).then(function(data) {
 				var predictArray = [];
 				var predictData = sortPredictions(data[0].data);
 				var predictions = predictData;
-				var destIDs = data[1].data[exitStop];
+				var destIDs = sortDest(data[1]);
 
 				//add to array only those who are scheduled to go to the destination stop
 				if (predictData && predictData.length > 0) {
