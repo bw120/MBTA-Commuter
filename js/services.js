@@ -202,6 +202,7 @@ function Mbta($http, $q) {
 				var predictions = predictData;
 				var destIDs = data[1].data[exitStop];
 
+
 				//add to array only those who are scheduled to go to the destination stop
 				if (predictData && predictData.length > 0) {
 					for (var t = 0; t < predictData.length; t++) {
@@ -212,6 +213,7 @@ function Mbta($http, $q) {
 						}
 					}
 				}
+
 
 				//sort predictions in order of arrival time
 				if (predictArray.length > 0) {

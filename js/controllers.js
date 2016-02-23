@@ -85,9 +85,10 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 		for (x = 0; x < $scope.allCommutes.length; x++) {
 			for (y = 0; y < $scope.allCommutes[x].routeLegs.length; y++) {
 				Mbta.getArrivals($scope.allCommutes[x].routeLegs[y].lineID, $scope.allCommutes[x].routeLegs[y].boardingStopID,
-						$scope.allCommutes[x].routeLegs[y].disboardStopID, $scope.allCommutes[x].routeLegs[y].direction, $scope.allCommutes[x].$id)
+						$scope.allCommutes[x].routeLegs[y].disboardStopID, $scope.allCommutes[x].routeLegs[y].direction, $scope.allCommutes[x].$id + "-" + y)
 					.then(function(data) {
 						$scope.allPredictions[data.id] = data;
+						console.log($scope.allPredictions[data.id]);
 					});
 			}
 		}
