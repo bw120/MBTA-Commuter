@@ -56,6 +56,10 @@ function BuilderCtrl($scope, $location, myCommutes, Mbta) {
 }
 
 function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta) {
+	$scope.contScroll = {
+		"overflow-y": "scroll",
+		"z-index": "0"
+	};
 	$scope.allCommutes = myCommutes.getData();
 	$scope.showAlert = [];
 	$scope.allAlerts = {};
@@ -67,6 +71,40 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 	$rootScope.$on("logout", function() {
 		$scope.allCommutes.$destroy();
 	});
+
+	//cancel the interval requests for updates on arrival predictions and alerts
+	$rootScope.$on("$routeChangeSuccess",
+		function(event, current, previous, rejection) {
+			if (angular.isDefined(theUpdates)) {
+				$interval.cancel(theUpdates);
+				theUpdates = undefined;
+			}
+		});
+
+
+	$scope.toggleAlert = function(id) {
+		$scope.showAlert[id] = !$scope.showAlert[id];
+		console.log($scope.showAlert[id]);
+		if ($scope.showAlert[id]) {
+			$scope.contScroll = {
+				"overflow-y": "hidden",
+				"z-index": "2"
+			};
+		} else {
+			$scope.contScroll = {
+				"overflow-y": "scroll",
+				"z-index": "0"
+			};
+		}
+	};
+
+	$scope.removeCommute = function(id) {
+		var key = $scope.allCommutes.$getRecord(id);
+		$scope.allCommutes.$remove(key).then(function(ref) {
+			console.log("Commute ID " + key + " has been deleted");
+
+		});
+	};
 
 	//Makes a request to get alerts for each line
 	var updateAlerts = function() {
@@ -88,7 +126,6 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 						$scope.allCommutes[x].routeLegs[y].disboardStopID, $scope.allCommutes[x].routeLegs[y].direction, $scope.allCommutes[x].$id + "-" + y)
 					.then(function(data) {
 						$scope.allPredictions[data.id] = data;
-						console.log($scope.allPredictions[data.id]);
 					});
 			}
 		}
@@ -109,14 +146,7 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 			}, 11000);
 
 		});
-	//cancel the interval requests for updates on arrival predictions and alerts
-	$rootScope.$on("$routeChangeSuccess",
-		function(event, current, previous, rejection) {
-			if (angular.isDefined(theUpdates)) {
-				$interval.cancel(theUpdates);
-				theUpdates = undefined;
-			}
-		});
+
 }
 
 function MenuCtrl($scope, Auth, $location) {

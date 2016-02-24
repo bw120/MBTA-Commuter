@@ -1,16 +1,74 @@
-		<div ng-controller="DashboardCtrl">
+		<div class="ctlContainer" ng-style="contScroll" ng-controller="DashboardCtrl">
 			<h1>Dashboard</h1>
+
 				<div ng-if="allCommutes.length <= 0">
 					<div class="commute">You have not setup any commutes. Click <a href="#/builder" ng-click="showMenu = false">here</a> to setup your commute.</div>
 				</div>
 				<div ng-if="allCommutes.length > 0">
 					<div class="box" ng-repeat="commute in allCommutes">
 						<h3 class="commute-header">{{ commute.name }}</h3>
+						<div class="settings">
+							<a ng-click="showSettings = !showSettings"><svg class="setting-icon" version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+								 x="0px" y="0px" viewBox="0 0 100 100" xml:space="preserve">
+							<polyline fill="#727272" stroke="#727272" stroke-width="0.5" stroke-miterlimit="10" points="98,43 89.2,54.8 80.5,43 98,43 "/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="12.6" y1="25.5" x2="59.4" y2="72.4"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="7.4" y1="32.4" x2="64.7" y2="65.5"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="4" y1="40.4" x2="68" y2="57.5"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="3" y1="48.9" x2="69.2" y2="48.9"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="19.4" y1="20.3" x2="52.6" y2="77.7"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="27.4" y1="17" x2="44.5" y2="80.9"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="36.1" y1="16.1" x2="36.1" y2="82.3"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="12.5" y1="72.5" x2="59.3" y2="25.6"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="19.4" y1="77.6" x2="52.5" y2="20.2"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="27.4" y1="81" x2="44.6" y2="17"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="7.1" y1="65.7" x2="64.5" y2="32.6"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="4" y1="57.6" x2="67.9" y2="40.5"/>
+							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="3" y1="49.1" x2="69.2" y2="49.1"/>
+							<circle fill="#FFFFFF" stroke="#727272" stroke-width="12" stroke-miterlimit="10" cx="35.9" cy="48.9" r="22.9"/>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							<g>
+							</g>
+							</svg></a>
+							<div class="settings-menu" ng-show="showSettings">
+					          	<ul class="dropdown-menu">
+					            	<li><a ng-click="removeCommute(commute.$id)">delete</a></li>
+					         	</ul>
+
+							</div>
+						</div>
 						<div class="commute" ng-repeat="leg in commute.routeLegs">
 							<h4 class="commute-name">{{leg.lineID}} / {{leg.direction}} / {{ leg.boardingStop.split("-")[0]}} to {{ leg.disboardStop.split("-")[0]}}</h4>
+
 							<ul>
 								<li class="commute-item"><strong class="commuter-detail-header">Predictions:</strong><span class="commute-detail"><em ng-repeat="prediction in allPredictions[commute.$id + '-' + $index].predictions | limitTo: 4">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em  ng-hide="allPredictions[commute.$id + '-' + $index].predictions.length > 0">Unavailable</em></span></li>
-								<li class="commute-item"><strong class="commuter-detail-header">Alerts: </strong> <span class="alerts commute-detail"> <a data-toggle="modal" ng-click="showAlert[leg.lineID] = !showAlert[leg.lineID]" ng-show="allAlerts[leg.lineID].length > 0" ><span class="badge">{{ allAlerts[leg.lineID].length }}</span></a>
+								<li class="commute-item"><strong class="commuter-detail-header">Alerts: </strong> <span class="alerts commute-detail"> <a data-toggle="modal" ng-click="toggleAlert(leg.lineID)" ng-show="allAlerts[leg.lineID].length > 0" ><span class="badge">{{ allAlerts[leg.lineID].length }}</span></a>
 									</span></li>
 							</ul>
 
@@ -20,7 +78,7 @@
 								    <div class="modal-content">
 								      <div class="modal-header">
 								      	<div class="modal-title">Alerts for {{ leg.line }}</div>
-								        <div class="close"><a ng-click="showAlert[leg.lineID] = !showAlert[leg.lineID]" aria-label="Close"><span aria-hidden="true">Close [X]</span></a></div>
+								        <div class="close"><a ng-click="toggleAlert(leg.lineID)" aria-label="Close"><span aria-hidden="true">Close [X]</span></a></div>
 
 								      </div>
 								      <div class="modal-body" >
