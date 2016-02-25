@@ -84,7 +84,6 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 
 	$scope.toggleAlert = function(id) {
 		$scope.showAlert[id] = !$scope.showAlert[id];
-		console.log($scope.showAlert[id]);
 		if ($scope.showAlert[id]) {
 			$scope.contScroll = {
 				"overflow-y": "hidden",
