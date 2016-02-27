@@ -152,7 +152,22 @@ function Mbta($http, $q) {
 		return $http.get(apiURL(query))
 			.then(
 				function(res) {
-					return res;
+					var alerts = {
+						'route_id': '',
+						'alerts': [],
+						'advisories': []
+					};
+
+					for (var x = 0; x < res.data.alerts.length; x++) {
+						alerts.route_id = res.data.route_id;
+						if (res.data.alerts[x].effect_name === "Delay" || res.data.alerts[x].alert_lifecycle == "New") {
+							alerts.alerts.push(res.data.alerts[x]);
+						} else {
+							alerts.advisories.push(res.data.alerts[x]);
+						}
+					}
+
+					return alerts;
 				},
 				function(res) {
 					console.log("error!");
@@ -201,7 +216,6 @@ function Mbta($http, $q) {
 				var predictData = sortPredictions(data[0].data);
 				var predictions = predictData;
 				var destIDs = data[1].data[exitStop];
-
 
 				//add to array only those who are scheduled to go to the destination stop
 				if (predictData && predictData.length > 0) {

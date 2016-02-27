@@ -57,9 +57,9 @@ function BuilderCtrl($scope, $location, myCommutes, Mbta) {
 
 function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta) {
 	$scope.contScroll = {
-		"overflow-y": "scroll",
 		"z-index": "0"
 	};
+
 	$scope.allCommutes = myCommutes.getData();
 	$scope.showAlert = [];
 	$scope.allAlerts = {};
@@ -81,27 +81,34 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 			}
 		});
 
-
-	$scope.toggleAlert = function(id) {
+	//make alert window visible
+	$scope.toggleAlert = function(id, alerts, header) {
+		//this variable toggles visibility
 		$scope.showAlert[id] = !$scope.showAlert[id];
+
+		//pass alert info into window
+		if (alerts) {
+			$scope.alertsToShow = alerts;
+			$scope.alertHeader = header;
+		}
+
+		//adjust some css to make it overlay properly
 		if ($scope.showAlert[id]) {
 			$scope.contScroll = {
-				"overflow-y": "hidden",
 				"z-index": "2"
 			};
 		} else {
 			$scope.contScroll = {
-				"overflow-y": "scroll",
 				"z-index": "0"
 			};
 		}
 	};
 
+	//delete defined commute
 	$scope.removeCommute = function(id) {
 		var key = $scope.allCommutes.$getRecord(id);
 		$scope.allCommutes.$remove(key).then(function(ref) {
 			console.log("Commute ID " + key + " has been deleted");
-
 		});
 	};
 
@@ -111,7 +118,7 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 			for (y = 0; y < $scope.allCommutes[x].routeLegs.length; y++) {
 				Mbta.getAlerts($scope.allCommutes[x].routeLegs[y].lineID)
 					.then(function(data) {
-						$scope.allAlerts[data.data.route_id] = data.data.alerts;
+						$scope.allAlerts[data.route_id] = data;
 					});
 			}
 		}

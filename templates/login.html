@@ -1,4 +1,4 @@
-<div ng-controller="LoginCtrl">
+<div class="ctlContainer" ng-controller="LoginCtrl">
 		<div class="inner-box" ng-show="whichToShow === 1">
 			<h2>Login</h2>
 			<form name="login">
@@ -16,7 +16,7 @@
 					<input type="password" class="form-control" id="password" placeholder="Password" ng-model="password" required>
 				</div>
 				<button type="submit" class="btn btn-default" ng-click="userLogin()">Login</button>
-				
+
 			</form>
 			<a ng-click="whichToShow = 2">Sign-up</a>
 			<p><a ng-click="whichToShow = 3">Forgot password?</a>
@@ -45,7 +45,7 @@
 					<input type="password" class="form-control" id="passwordConfirm" placeholder="Retype your Password" ng-model="confirmPassword" required>
 				</div>
 				<button type="submit" class="btn btn-default" ng-click="createUser()">Submit</button>
-				
+
 			</form>
 			<a ng-click="whichToShow = 1">Already have an account? Click Here to login</a>
 			<p><a ng-click="whichToShow = 3">Forgot password?</a>
@@ -66,7 +66,7 @@
 
 				</div>
 				<button type="submit" class="btn btn-default" ng-click="passReset()">Reset Password</button>
-				
+
 			</form>
 			<a ng-click="whichToShow = 1">Login</a>
 			<p><a ng-click="whichToShow = 2">Sign-up</a>
