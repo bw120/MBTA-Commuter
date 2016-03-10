@@ -2,60 +2,15 @@
 			<h1>Dashboard</h1>
 
 				<div ng-if="allCommutes.length <= 0">
-					<div class="commute">You have not setup any commutes. Click <a href="#/builder" ng-click="showMenu = false">here</a> to setup your commute.</div>
+					<div class="message">You have not setup any commutes. Click <a href="#/builder" ng-click="showMenu = false">here</a> to setup your commute.</div>
 				</div>
 				<div ng-if="allCommutes.length > 0">
 					<div class="box" ng-repeat="commute in allCommutes">
 						<h3 class="commute-header">{{ commute.name }}</h3>
 						<div class="settings">
-							<a ng-click="showSettings = !showSettings"><svg class="setting-icon" version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-								 x="0px" y="0px" viewBox="0 0 100 100" xml:space="preserve">
-							<polyline fill="#727272" stroke="#727272" stroke-width="0.5" stroke-miterlimit="10" points="98,43 89.2,54.8 80.5,43 98,43 "/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="12.6" y1="25.5" x2="59.4" y2="72.4"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="7.4" y1="32.4" x2="64.7" y2="65.5"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="4" y1="40.4" x2="68" y2="57.5"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="3" y1="48.9" x2="69.2" y2="48.9"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="19.4" y1="20.3" x2="52.6" y2="77.7"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="27.4" y1="17" x2="44.5" y2="80.9"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="36.1" y1="16.1" x2="36.1" y2="82.3"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="12.5" y1="72.5" x2="59.3" y2="25.6"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="19.4" y1="77.6" x2="52.5" y2="20.2"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="27.4" y1="81" x2="44.6" y2="17"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="7.1" y1="65.7" x2="64.5" y2="32.6"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="4" y1="57.6" x2="67.9" y2="40.5"/>
-							<line fill="none" stroke="#727272" stroke-width="4" stroke-miterlimit="10" x1="3" y1="49.1" x2="69.2" y2="49.1"/>
-							<circle fill="#FFFFFF" stroke="#727272" stroke-width="12" stroke-miterlimit="10" cx="35.9" cy="48.9" r="22.9"/>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							<g>
-							</g>
-							</svg></a>
+							<a ng-click="showSettings = !showSettings">
+								<svg class="setting-icon" version=1.2 baseProfile=tiny id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px viewBox="0 0 100 100"xml:space=preserve><polyline fill=#727272 stroke=#727272 stroke-width=0.5 stroke-miterlimit=10 points="98,43 89.2,54.8 80.5,43 98,43 "/><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=12.6 y1=25.5 x2=59.4 y2=72.4 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=7.4 y1=32.4 x2=64.7 y2=65.5 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=4 y1=40.4 x2=68 y2=57.5 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=3 y1=48.9 x2=69.2 y2=48.9 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=19.4 y1=20.3 x2=52.6 y2=77.7 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=27.4 y1=17 x2=44.5 y2=80.9 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=36.1 y1=16.1 x2=36.1 y2=82.3 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=12.5 y1=72.5 x2=59.3 y2=25.6 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=19.4 y1=77.6 x2=52.5 y2=20.2 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=27.4 y1=81 x2=44.6 y2=17 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=7.1 y1=65.7 x2=64.5 y2=32.6 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=4 y1=57.6 x2=67.9 y2=40.5 /><line fill=none stroke=#727272 stroke-width=4 stroke-miterlimit=10 x1=3 y1=49.1 x2=69.2 y2=49.1 /><circle fill=#FFFFFF stroke=#727272 stroke-width=12 stroke-miterlimit=10 cx=35.9 cy=48.9 r=22.9 /><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+							</a>
 							<div class="settings-menu" ng-show="showSettings">
 					          	<ul class="dropdown-menu">
 					            	<li><a ng-click="removeCommute(commute.$id)">delete</a></li>
@@ -66,11 +21,23 @@
 						<div class="commute" ng-repeat="leg in commute.routeLegs">
 							<h4 class="commute-name">{{leg.lineID}} / {{leg.direction}} / {{ leg.boardingStop.split("-")[0]}} to {{ leg.disboardStop.split("-")[0]}}</h4>
 
-							<ul>
+							<ul class="commute-list">
 								<li class="commute-item"><strong class="commuter-detail-header">Predictions:</strong><span class="commute-detail"><em ng-repeat="prediction in allPredictions[commute.$id + '-' + $index].predictions | limitTo: 4">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em  ng-hide="allPredictions[commute.$id + '-' + $index].predictions.length > 0">Unavailable</em></span></li>
 								<li class="commute-item">
-									<strong class="commuter-detail-header">Alerts: </strong> <span class="alerts commute-detail"> <a data-toggle="modal" ng-click="toggleAlert(leg.lineID, allAlerts[leg.lineID].alerts, 'Alerts')" ng-show="allAlerts[leg.lineID].alerts.length > 0" ><span class="badge">{{ allAlerts[leg.lineID].alerts.length }}</span></a>
-									</span> <strong class="commuter-detail-header">Advisories: </strong> <span class="alerts commute-detail"> <a data-toggle="modal" ng-click="toggleAlert(leg.lineID, allAlerts[leg.lineID].advisories, 'Advisories')" ng-show="allAlerts[leg.lineID].advisories.length > 0" ><span class="badge">{{ allAlerts[leg.lineID].advisories.length }}</span></a>
+									<span class="alerts commute-detail" ng-show="allAlerts[leg.lineID].alerts.length > 0" >
+										<a class="alert-link" data-toggle="modal" ng-click="toggleAlert(leg.lineID, allAlerts[leg.lineID].alerts, 'Alerts')" >
+										<svg class="alertIcon" version=1.2 baseProfile=tiny id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px viewBox="0 0 50 50"xml:space=preserve><path fill=#F16522 stroke=#B3B3B3 stroke-width=0.5 stroke-miterlimit=10 d="M48.8,39.7L29.9,6.1c-2.2-3.9-7.8-3.9-9.9,0
+										L1.3,39.8c-2.1,3.8,0.6,8.4,5,8.4h37.5C48.1,48.2,50.9,43.5,48.8,39.7z"/><path fill=none stroke=#000000 stroke-miterlimit=10 d=M57,46.1 /><path fill=none stroke=#000000 stroke-miterlimit=10 d=M27.7,46.1 /><g><path fill=#FFFFFF stroke=#B3B3B3 stroke-width=0.25 stroke-miterlimit=10 d="M23.9,35.7l-1.1-16.2v-6.8h4.6v6.8l-1.1,16.2
+										H23.9z M22.9,43.2V39h4.3v4.3H22.9z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+										<span>{{ allAlerts[leg.lineID].alerts.length }} Alerts</span></a>
+									</span>
+
+									<span class="alerts commute-detail" ng-show="allAlerts[leg.lineID].advisories.length > 0">
+										<a class="alert-link" data-toggle="modal" ng-click="toggleAlert(leg.lineID, allAlerts[leg.lineID].advisories, 'Advisories')" >
+											<svg class="alertIcon" version=1.2 baseProfile=tiny id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px viewBox="0 0 50 50"xml:space=preserve><circle fill=#66D41E stroke=#B3B3B3 stroke-width=0.5 stroke-miterlimit=10 cx=25 cy=25.7 r=22.5 /><path fill=none stroke=#000000 stroke-miterlimit=10 d=M62.2,48.2 /><path fill=none stroke=#000000 stroke-miterlimit=10 d=M28,48.2 /><g><path fill=#FFFFFF stroke=#B3B3B3 stroke-width=0.25 stroke-miterlimit=10 d="M23.8,34.5l-1.2-17.2v-7.2h4.9v7.2l-1.2,17.2
+											H23.8z M22.8,42.6v-4.5h4.6v4.5H22.8z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
+										 {{ allAlerts[leg.lineID].advisories.length }} Notices</a>
 									</span>
 								</li>
 							</ul>
