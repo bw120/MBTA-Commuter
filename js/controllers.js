@@ -168,6 +168,7 @@ function MenuCtrl($scope, Auth, $location) {
 }
 
 function ExplorerCtrl($scope, $location, $interval, Mbta, $route, $rootScope) {
+	var theUpdates;
 	$scope.showAlert = [];
 	$scope.modes = ["Subway", "Bus", "Commuter Rail", "Boat"];
 
@@ -187,44 +188,44 @@ function ExplorerCtrl($scope, $location, $interval, Mbta, $route, $rootScope) {
 			});
 	};
 	$scope.displayPredictions = function() {
+		if ($scope.leg.boarding && $scope.leg.deboarding) {
+			$scope.route = {
+				modeID: $scope.leg.mode,
+				mode: $scope.modes[$scope.leg.mode],
+				lineID: $scope.leg.selectedLine.route_id,
+				line: $scope.leg.selectedLine.route_name,
+				direction: $scope.leg.direction.direction_name,
+				boardingStopID: $scope.leg.boarding.stop_id,
+				boardingStopParent: $scope.leg.boarding.parent_station,
+				disboardStopID: $scope.leg.deboarding.stop_id,
+				disboardStopParent: $scope.leg.deboarding.parent_station,
+				boardingStop: $scope.leg.boarding.stop_name,
+				disboardStop: $scope.leg.deboarding.stop_name
+			};
 
-		$scope.route = {
-			modeID: $scope.leg.mode,
-			mode: $scope.modes[$scope.leg.mode],
-			lineID: $scope.leg.selectedLine.route_id,
-			line: $scope.leg.selectedLine.route_name,
-			direction: $scope.leg.direction.direction_name,
-			boardingStopID: $scope.leg.boarding.stop_id,
-			boardingStopParent: $scope.leg.boarding.parent_station,
-			disboardStopID: $scope.leg.deboarding.stop_id,
-			disboardStopParent: $scope.leg.deboarding.parent_station,
-			boardingStop: $scope.leg.boarding.stop_name,
-			disboardStop: $scope.leg.deboarding.stop_name
-		};
-		console.log($scope.route);
-		updateAlerts();
-		updatePredictions();
+			updateAlerts();
+			updatePredictions();
+			endIntUpdates();
+			startIntUpdates();
+		}
+
 	};
 
 	//Makes a request to get alerts for each line
 	var updateAlerts = function() {
-
 		Mbta.getAlerts($scope.route.lineID)
 			.then(function(data) {
 				$scope.alerts = data;
-				console.log($scope.alerts);
 			});
 
 	};
 
 	//Makes a request to get predictions for each line
 	var updatePredictions = function() {
-
 		Mbta.getArrivals($scope.route.lineID, $scope.route.boardingStopID,
 				$scope.route.disboardStopID, $scope.route.direction, $scope.route.lineID)
 			.then(function(data) {
 				$scope.predictions = data;
-				console.log($scope.predictions);
 			});
 
 	};
@@ -255,6 +256,23 @@ function ExplorerCtrl($scope, $location, $interval, Mbta, $route, $rootScope) {
 			};
 		}
 	};
+	//once a route is selected, update predictions & allerts periodically
+	var startIntUpdates = function() {
+		theUpdates = $interval(function() {
+			updateAlerts();
+			updatePredictions();
+			console.log("updated alerts and predicitons");
+		}, 11000);
+	};
+
+	var endIntUpdates = function(event, current, previous, rejection) {
+		if (angular.isDefined(theUpdates)) {
+			$interval.cancel(theUpdates);
+			theUpdates = undefined;
+		}
+	};
+	//cancel the interval requests for updates on arrival predictions and alerts
+	$rootScope.$on("$routeChangeSuccess", endIntUpdates());
 
 }
 
