@@ -56,6 +56,7 @@ function BuilderCtrl($scope, $location, myCommutes, Mbta) {
 }
 
 function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommutes, Mbta) {
+	//initial value of z-index for scroll
 	$scope.contScroll = {
 		"z-index": "0"
 	};
@@ -92,7 +93,7 @@ function DashboardCtrl($scope, $location, $interval, $route, $rootScope, myCommu
 			$scope.alertHeader = header;
 		}
 
-		//adjust some css to make it overlay properly
+		//adjust some css to make it overlay properly when alert window opens
 		if ($scope.showAlert[id]) {
 			$scope.contScroll = {
 				"z-index": "2"
@@ -162,6 +163,97 @@ function MenuCtrl($scope, Auth, $location) {
 	$scope.logout = function() {
 		Auth.logout();
 		$location.path('/login');
+	};
+
+}
+
+function ExplorerCtrl($scope, $location, $interval, Mbta, $route, $rootScope) {
+	$scope.showAlert = [];
+	$scope.modes = ["Subway", "Bus", "Commuter Rail", "Boat"];
+
+	//gets a list of all routes for all modes of transit
+	Mbta.getRoutes()
+		.then(function(data) {
+			$scope.AllRoutes = data;
+		});
+
+	//gets a list of stops for the selected route
+	$scope.getStops = function(route) {
+		Mbta.getStops(route.route_id)
+			.then(function(data) {
+				$scope.Stops = data;
+				$scope.selectedLine = route.route_id;
+				$scope.line = route.route_name;
+			});
+	};
+	$scope.displayPredictions = function() {
+
+		$scope.route = {
+			modeID: $scope.leg.mode,
+			mode: $scope.modes[$scope.leg.mode],
+			lineID: $scope.leg.selectedLine.route_id,
+			line: $scope.leg.selectedLine.route_name,
+			direction: $scope.leg.direction.direction_name,
+			boardingStopID: $scope.leg.boarding.stop_id,
+			boardingStopParent: $scope.leg.boarding.parent_station,
+			disboardStopID: $scope.leg.deboarding.stop_id,
+			disboardStopParent: $scope.leg.deboarding.parent_station,
+			boardingStop: $scope.leg.boarding.stop_name,
+			disboardStop: $scope.leg.deboarding.stop_name
+		};
+		console.log($scope.route);
+		updateAlerts();
+		updatePredictions();
+	};
+
+	//Makes a request to get alerts for each line
+	var updateAlerts = function() {
+
+		Mbta.getAlerts($scope.route.lineID)
+			.then(function(data) {
+				$scope.alerts = data;
+				console.log($scope.alerts);
+			});
+
+	};
+
+	//Makes a request to get predictions for each line
+	var updatePredictions = function() {
+
+		Mbta.getArrivals($scope.route.lineID, $scope.route.boardingStopID,
+				$scope.route.disboardStopID, $scope.route.direction, $scope.route.lineID)
+			.then(function(data) {
+				$scope.predictions = data;
+				console.log($scope.predictions);
+			});
+
+	};
+
+	$scope.contScroll = {
+		"z-index": "0"
+	};
+
+	//make alert window visible
+	$scope.toggleAlert = function(id, alerts, header) {
+		//this variable toggles visibility
+		$scope.showAlert[id] = !$scope.showAlert[id];
+
+		//pass alert info into window
+		if (alerts) {
+			$scope.alertsToShow = alerts;
+			$scope.alertHeader = header;
+		}
+
+		//adjust some css to make it overlay properly when alert window opens
+		if ($scope.showAlert[id]) {
+			$scope.contScroll = {
+				"z-index": "2"
+			};
+		} else {
+			$scope.contScroll = {
+				"z-index": "0"
+			};
+		}
 	};
 
 }

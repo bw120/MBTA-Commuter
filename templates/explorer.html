@@ -1,1 +1,108 @@
-		<div><p>Explorer template</p></div>
+<div class="ctlContainer" ng-style="contScroll" ng-controller="ExplorerCtrl">
+	<h1>Get Route Prediction</h1>
+	<div class="inner-box">
+		<div>
+			<label>Please select a transit mode</label>
+			<select ng-model="leg.mode">
+				<option value="0">Subway</option>
+				<option value="1" >Bus</option>
+				<option value="2">Commuter Rail</option>
+				<option value="3">Boat</option>
+			</select>
+		</div>
+		<div ng-switch on="leg.mode">
+
+			<div ng-switch-when="0">
+				<label>Please select a line</label>
+				<select ng-model="leg.selectedLine" ng-change="getStops(leg.selectedLine)" ng-options="item as item.route_name for item in AllRoutes[0]"></select>
+			</div>
+			<div ng-switch-when="1">
+				<label>Please select a line</label>
+				<select ng-model="leg.selectedLine" ng-change="getStops(leg.selectedLine)" ng-options="item as item.route_name for item in AllRoutes[2]"></select>
+			</div>
+			<div ng-switch-when="2">
+				<label>Please select a line</label>
+				<select ng-model="leg.selectedLine" ng-change="getStops(leg.selectedLine)" ng-options="item as item.route_name for item in AllRoutes[1]"></select>
+			</div>
+			<div ng-switch-when="3">
+				<label>Please select a line</label>
+				<select ng-model="leg.selectedLine" ng-change="getStops(leg.selectedLine)" ng-options="item as item.route_name for item in AllRoutes[3]"></select>
+			</div>
+
+		</div>
+		<div ng-show="leg.selectedLine">
+			<div class="trip">
+				<label>Trip direction</label>
+				<select ng-model="leg.direction" ng-options="item as item.direction_name for item in Stops"></select>
+			</div>
+
+			<div ng-show="leg.direction">
+				<p>
+					<label>Select boarding stop</label>
+					<select ng-model="leg.boarding" ng-options="item as item.stop_name for item in Stops[leg.direction.direction_id].stop" ng-change="displayPredictions()"></select>
+				</p>
+				<p>
+					<label>Select deboarding stop</label>
+					<select ng-model="leg.deboarding" ng-options="item as item.stop_name for item in Stops[leg.direction.direction_id].stop" ng-change="displayPredictions()"></select>
+				</p>
+			</div>
+			<div ng-show="leg.deboarding && leg.boarding">
+				<button ng-click="displayPredictions()">Display Predictions</button>
+			</div>
+		</div>
+
+				<div ng-show="route">
+					<div class="box">
+						<h3 class="commute-header">Route Prediction</h3>
+						<div class="commute">
+							<h4 class="commute-name">{{route.lineID}} / {{route.direction}} / {{ route.boardingStop.split("-")[0]}} to {{ route.disboardStop.split("-")[0]}}</h4>
+
+							<ul class="commute-list">
+								<li class="commute-item"><strong class="commuter-detail-header">Predictions:</strong><span class="commute-detail"><em ng-repeat="prediction in predictions.predictions | limitTo: 4">{{ (prediction.pre_away/60) | number:0}}{{$last ? ' minutes' : ', '}} </em><em  ng-hide="predictions.predictions.length > 0">Unavailable</em></span></li>
+								<li class="commute-item">
+									<span class="alerts commute-detail" ng-show="alerts.length > 0" >
+										<a class="alert-link" data-toggle="modal" ng-click="toggleAlert(route.lineID, alerts, 'Alerts')" >
+										<svg class="alertIcon" version=1.2 baseProfile=tiny id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px viewBox="0 0 50 50"xml:space=preserve><path fill=#F16522 stroke=#B3B3B3 stroke-width=0.5 stroke-miterlimit=10 d="M48.8,39.7L29.9,6.1c-2.2-3.9-7.8-3.9-9.9,0
+										L1.3,39.8c-2.1,3.8,0.6,8.4,5,8.4h37.5C48.1,48.2,50.9,43.5,48.8,39.7z"/><path fill=none stroke=#000000 stroke-miterlimit=10 d=M57,46.1 /><path fill=none stroke=#000000 stroke-miterlimit=10 d=M27.7,46.1 /><g><path fill=#FFFFFF stroke=#B3B3B3 stroke-width=0.25 stroke-miterlimit=10 d="M23.9,35.7l-1.1-16.2v-6.8h4.6v6.8l-1.1,16.2
+										H23.9z M22.9,43.2V39h4.3v4.3H22.9z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+										<span>{{ alerts.length }} Alerts</span></a>
+									</span>
+
+									<span class="alerts commute-detail" ng-show="alerts.advisories.length > 0">
+										<a class="alert-link" data-toggle="modal" ng-click="toggleAlert(route.lineID, alerts.advisories, 'Advisories')" >
+											<svg class="alertIcon" version=1.2 baseProfile=tiny id=Layer_1 xmlns=http://www.w3.org/2000/svg xmlns:xlink=http://www.w3.org/1999/xlink x=0px y=0px viewBox="0 0 50 50"xml:space=preserve><circle fill=#66D41E stroke=#B3B3B3 stroke-width=0.5 stroke-miterlimit=10 cx=25 cy=25.7 r=22.5 /><path fill=none stroke=#000000 stroke-miterlimit=10 d=M62.2,48.2 /><path fill=none stroke=#000000 stroke-miterlimit=10 d=M28,48.2 /><g><path fill=#FFFFFF stroke=#B3B3B3 stroke-width=0.25 stroke-miterlimit=10 d="M23.8,34.5l-1.2-17.2v-7.2h4.9v7.2l-1.2,17.2
+											H23.8z M22.8,42.6v-4.5h4.6v4.5H22.8z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+
+										 {{ alerts.advisories.length }} Notices</a>
+									</span>
+								</li>
+							</ul>
+
+								<!-- Popup window to show alert information -->
+								<div class="modal" ng-show="showAlert[route.lineID]" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								  <div class="modal-dialog">
+								    <div class="modal-content">
+								      <div class="modal-header">
+								      	<div class="modal-title">{{alertHeader}} for {{ route.line }}</div>
+								        <div class="close"><a ng-click="toggleAlert(route.lineID)" aria-label="Close"><span aria-hidden="true">Close [X]</span></a></div>
+
+								      </div>
+								      <div class="modal-body" >
+								      	<div class="alert-item" ng-repeat="alert in alertsToShow | orderBy: '-last_modified_dt'">
+									        <h3>{{ alert.effect_name }} <span ng-show="alert.cause_name">-</span> {{ alert.cause_name }}</h3>
+									        <h4>{{alert.severity}}<span ng-show="alert.alert_lifecycle">-</span> {{alert.alert_lifecycle}}</h4>
+									        <p>{{ alert.header_text }}</p>
+									    </div>
+								      </div>
+								    </div>
+								  </div>
+								</div>
+
+						</div>
+					</div>
+				</div>
+
+
+
+	</div>
+</div>
